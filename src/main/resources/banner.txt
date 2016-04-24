@@ -1,0 +1,7 @@
+${AnsiColor.BLUE}_____________________  __      __ 
+${AnsiColor.BLUE}\_   _____/\______   \/  \    /  \
+${AnsiColor.BLUE} |    __)   |     ___/\   \/\/   /
+${AnsiColor.BLUE} |     \    |    |     \        / 
+${AnsiColor.BLUE} \_____/    |____|      \__/\__/  
+${AnsiColor.BRIGHT_BLUE}█████████████████████████████████
+${AnsiColor.RED}:: frozen particle wave :: Running Spring Boot ${spring-boot.version} :: \ö/${AnsiColor.BLACK}
