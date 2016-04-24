@@ -1,4 +1,5 @@
 # frozen-particle-waves
+See the file LICENSE for license.
 Frozen particle waves is a starting place to add IoT type monitoring for cameras devices etc.  
 
 ## First Features
