@@ -46,6 +46,11 @@ public class BasicURLCamera implements ImageRetriever {
 		return url;
 	}
 
+	@Override
+	public String toString() {
+		return getUrl();
+	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}

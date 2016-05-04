@@ -5,6 +5,8 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,8 @@ import fpw.domain.image.ImageRetriever;
 @Component
 public class ImageRetrieverService {
 
-	List<ImageRetriever> imageRetrievers = null;
-
-
+	private List<ImageRetriever> imageRetrievers = null;
+	private List<QueueImageService> queueIR = null;
 
 	public List<ImageRetriever> getImageRetrievers() {
 		return imageRetrievers;
@@ -40,12 +41,34 @@ public class ImageRetrieverService {
 		Object result = d.readObject();
 		imageRetrievers = (List<ImageRetriever>) result;
 		d.close();
+
+		makeQueueRetrievers();
+		scheduleThreads();
+
 	}
 
-	public Image getFirstImage(int index) throws IOException {
-		return imageRetrievers
-				.get(index)
-				.getImage();
+	private void scheduleThreads() {
+		for (QueueImageService qir : queueIR) {
+			Thread t = new Thread(qir);
+			t.setDaemon(true);
+			t.start();
+		}
 	}
+
+	void makeQueueRetrievers() {
+		queueIR = new ArrayList<QueueImageService>();
+		for (ImageRetriever ir : imageRetrievers) {
+			queueIR.add(new QueueImageService(ir));
+		}
+	}
+
+	public Image getFirstImage(int cameraIndex) throws IOException {
+		return queueIR.get(cameraIndex).getFirst();
+	}
+	
+	public Image getImageAt(int cameraIndex, int index) throws IOException {
+		return queueIR.get(cameraIndex).getAt(index);
+	}
+		
 
 }

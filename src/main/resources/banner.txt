@@ -1,7 +1,7 @@
-${AnsiColor.BLUE}_____________________  __      __ 
-${AnsiColor.BLUE}\_   _____/\______   \/  \    /  \
-${AnsiColor.BLUE} |    __)   |     ___/\   \/\/   /
-${AnsiColor.BLUE} |     \    |    |     \        / 
-${AnsiColor.BLUE} \_____/    |____|      \__/\__/  
+${AnsiColor.BRIGHT_BLUE}___________________  __      __ 
+${AnsiColor.BRIGHT_BLUE}\_  _____/\_____   \/  \    /  \
+${AnsiColor.BRIGHT_BLUE} |   __)   |    ___/\   \/\/   /
+${AnsiColor.BLUE} |    \    |   |     \        / 
+${AnsiColor.BLUE} \____/    |___|      \__/\__/  
 ${AnsiColor.BRIGHT_BLUE}█████████████████████████████████
 ${AnsiColor.RED}:: frozen particle wave :: Running Spring Boot ${spring-boot.version} :: \ö/${AnsiColor.BLACK}

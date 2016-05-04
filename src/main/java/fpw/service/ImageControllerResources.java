@@ -32,7 +32,16 @@ public class ImageControllerResources {
 		Image img = imageRS.getFirstImage(cameraID);
 		response.setContentType(img.getContentType());
 		response.setContentLength(img.getData().length);
-		response.setHeader("TEST", img.getContentType());
+		response.getOutputStream().write(img.getData());
+		response.flushBuffer();
+	}
+	
+	@RequestMapping(path = "/camera/{cameraID}/image/{imageID}", method = RequestMethod.GET)
+	@ResponseBody
+	public void getImage(@PathVariable int cameraID, @PathVariable int imageID, HttpServletResponse response) throws Throwable {
+		Image img = imageRS.getImageAt(cameraID, imageID);
+		response.setContentType(img.getContentType());
+		response.setContentLength(img.getData().length);
 		response.getOutputStream().write(img.getData());
 		response.flushBuffer();
 	}

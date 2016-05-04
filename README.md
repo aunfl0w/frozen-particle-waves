@@ -16,6 +16,7 @@ features such as storing data, showing trends.
 
 ### How to build and run
 You will need the pre-requisites to build and run. 
+
 1. java 8 jdk
 2. maven (mvn)
 
@@ -29,7 +30,7 @@ You will need the pre-requisites to build and run.
 
 
 ## TODOs
-1. UI
+1. UI [](https://github.com/aunfl0w/frozen-particle-waves-gui "frozen-particle-waves-gui") 
 2. Get minimal working app.
 3. Figure out what next. 
 
