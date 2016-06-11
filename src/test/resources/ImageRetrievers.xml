@@ -3,6 +3,9 @@
  <object class="java.util.ArrayList">
   <void method="add">
    <object class="fpw.domain.image.camera.BasicURLCamera">
+    <void property="ID">
+     <string>one</string>
+    </void>
     <void property="contentType">
      <string>image/jpg</string>
     </void>
@@ -13,6 +16,9 @@
   </void>
   <void method="add">
    <object class="fpw.domain.image.camera.BasicURLCamera">
+    <void property="ID">
+     <string>two</string>
+    </void>
     <void property="contentType">
      <string>image/gif</string>
     </void>

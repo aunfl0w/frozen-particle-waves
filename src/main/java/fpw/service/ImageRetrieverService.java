@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,14 +21,15 @@ import fpw.domain.image.ImageRetriever;
 @Component
 public class ImageRetrieverService {
 
-	private List<ImageRetriever> imageRetrievers = null;
-	private List<QueueImageService> queueIR = null;
+	//private List<ImageRetriever> imageRetrievers = null;
+	private Map<String, ImageRetriever> imageRetrievers = new HashMap<String, ImageRetriever>();
+	private Map<String, QueueImageService> queueIR = new HashMap<String, QueueImageService>();
 
-	public List<ImageRetriever> getImageRetrievers() {
+	public Map<String, ImageRetriever>  getImageRetrievers() {
 		return imageRetrievers;
 	}
 
-	public void setImageRetrievers(List<ImageRetriever> imageRetrievers) {
+	public void setImageRetrievers(Map<String, ImageRetriever>  imageRetrievers) {
 		this.imageRetrievers = imageRetrievers;
 	}
 
@@ -39,7 +42,9 @@ public class ImageRetrieverService {
 	public void loageImageRetrievers(String location) throws FileNotFoundException {
 		XMLDecoder d = new XMLDecoder(new BufferedInputStream(new FileInputStream(location)));
 		Object result = d.readObject();
-		imageRetrievers = (List<ImageRetriever>) result;
+		for (ImageRetriever tempIR: (List<ImageRetriever>)result){
+			imageRetrievers.put(tempIR.getID(), tempIR);
+		}
 		d.close();
 
 		makeQueueRetrievers();
@@ -48,7 +53,7 @@ public class ImageRetrieverService {
 	}
 
 	private void scheduleThreads() {
-		for (QueueImageService qir : queueIR) {
+		for (QueueImageService qir : queueIR.values()) {
 			Thread t = new Thread(qir);
 			t.setDaemon(true);
 			t.start();
@@ -56,18 +61,17 @@ public class ImageRetrieverService {
 	}
 
 	void makeQueueRetrievers() {
-		queueIR = new ArrayList<QueueImageService>();
-		for (ImageRetriever ir : imageRetrievers) {
-			queueIR.add(new QueueImageService(ir));
+		for (ImageRetriever ir : imageRetrievers.values()) {
+			queueIR.put(ir.getID(), new QueueImageService(ir));
 		}
 	}
 
-	public Image getFirstImage(int cameraIndex) throws IOException {
-		return queueIR.get(cameraIndex).getFirst();
+	public Image getFirstImage(String ID) throws IOException {
+		return queueIR.get(ID).getFirst();
 	}
 	
-	public Image getImageAt(int cameraIndex, int index) throws IOException {
-		return queueIR.get(cameraIndex).getAt(index);
+	public Image getImageAt(String ID, int index) throws IOException {
+		return queueIR.get(ID).getAt(index);
 	}
 		
 

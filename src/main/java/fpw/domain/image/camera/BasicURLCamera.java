@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fpw.domain.image.Image;
 import fpw.domain.image.ImageRetriever;
 
 public class BasicURLCamera implements ImageRetriever {
 
+
 	String url;
 	String contentType;
-
+	String name;
+	
 	@Override
 	public Image getImage() throws IOException {
 		URL u = new URL(url);
@@ -42,7 +46,7 @@ public class BasicURLCamera implements ImageRetriever {
 		return image;
 	}
 
-	public String getUrl() {
+	@JsonIgnore public String getUrl() {
 		return url;
 	}
 
@@ -63,4 +67,15 @@ public class BasicURLCamera implements ImageRetriever {
 		this.contentType = contentType;
 	}
 
+	@Override
+	public String getID() {
+		return name;
+	}
+
+	@Override
+	public void setID(String name) {
+		this.name = name;
+	}
+
+	
 }

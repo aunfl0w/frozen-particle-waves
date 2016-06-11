@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -45,11 +46,13 @@ public class LoadCamearasTest {
 		BasicURLCamera c = new BasicURLCamera();
 		c.setUrl("http://192.168.1.2:8080/photo.jpg");
 		c.setContentType("image/jpg");
+		c.setID("one");
 		lcs.add(c);
 		
 		c = new BasicURLCamera();
 		c.setUrl("http://192.168.100.1/logo.gif");
 		c.setContentType("image/gif");
+		c.setID("two");
 		lcs.add(c);
 
 		XMLEncoder e = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("src/test/resources/ImageRetrievers.xml")));
@@ -60,11 +63,11 @@ public class LoadCamearasTest {
 	@Test
 	public void readList() throws Exception {
 		ImageRetrieverService imageRS = new ImageRetrieverService("src/test/resources/ImageRetrievers.xml");
-		List<ImageRetriever> x = imageRS.getImageRetrievers();
-		assertEquals("http://192.168.1.2:8080/photo.jpg", ((BasicURLCamera)x.get(0)).getUrl());
-		assertEquals("image/jpg", ((BasicURLCamera)x.get(0)).getContentType());
-		assertEquals("http://192.168.100.1/logo.gif", ((BasicURLCamera)x.get(1)).getUrl());
-		assertEquals("image/gif", ((BasicURLCamera)x.get(1)).getContentType());
+		Map<String,ImageRetriever> x = imageRS.getImageRetrievers();
+		assertEquals("http://192.168.1.2:8080/photo.jpg", ((BasicURLCamera)x.get("one")).getUrl());
+		assertEquals("image/jpg", ((BasicURLCamera)x.get("one")).getContentType());
+		assertEquals("http://192.168.100.1/logo.gif", ((BasicURLCamera)x.get("two")).getUrl());
+		assertEquals("image/gif", ((BasicURLCamera)x.get("two")).getContentType());
 
 	}
 

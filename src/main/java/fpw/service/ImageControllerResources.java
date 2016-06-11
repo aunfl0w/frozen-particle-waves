@@ -1,6 +1,7 @@
 package fpw.service;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpw.domain.image.Image;
+import fpw.domain.image.ImageRetriever;
 
 @RestController
 public class ImageControllerResources {
@@ -20,15 +22,16 @@ public class ImageControllerResources {
 	ImageRetrieverService imageRS;
 
 	@RequestMapping("/camera/info")
-	public void  getInfo(HttpServletResponse response) throws IOException {
-		response.getWriter().println(String.format("{\"count\": %d }", imageRS.getImageRetrievers().size()));
-		response.flushBuffer();
+	public Collection<ImageRetriever> getInfo(HttpServletResponse response) throws IOException {
+		//response.getWriter().println(String.format("{\"count\": %d }", imageRS.getImageRetrievers().size()));
+		//getClass().response.flushBuffer();
+		return imageRS.getImageRetrievers().values();
 	}
 	
 
 	@RequestMapping(path = "/camera/{cameraID}/image", method = RequestMethod.GET)
 	@ResponseBody
-	public void getImage(@PathVariable int cameraID, HttpServletResponse response) throws Throwable {
+	public void getImage(@PathVariable String cameraID, HttpServletResponse response) throws Throwable {
 		Image img = imageRS.getFirstImage(cameraID);
 		response.setContentType(img.getContentType());
 		response.setContentLength(img.getData().length);
@@ -38,7 +41,7 @@ public class ImageControllerResources {
 	
 	@RequestMapping(path = "/camera/{cameraID}/image/{imageID}", method = RequestMethod.GET)
 	@ResponseBody
-	public void getImage(@PathVariable int cameraID, @PathVariable int imageID, HttpServletResponse response) throws Throwable {
+	public void getImage(@PathVariable String cameraID, @PathVariable int imageID, HttpServletResponse response) throws Throwable {
 		Image img = imageRS.getImageAt(cameraID, imageID);
 		response.setContentType(img.getContentType());
 		response.setContentLength(img.getData().length);
