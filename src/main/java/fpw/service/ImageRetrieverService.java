@@ -34,12 +34,12 @@ public class ImageRetrieverService {
 	}
 
 	@Autowired
-	public ImageRetrieverService(@Value("${camera.config.file}") String configFile) throws FileNotFoundException {
-		loageImageRetrievers(configFile);
+	public ImageRetrieverService(@Value("${camera.config.file}") String configFile, @Value("${camera.config.timeoutMS:15000}") int timeoutMS ) throws FileNotFoundException {
+		loageImageRetrievers(configFile, timeoutMS);
 	}
 
 	@SuppressWarnings("unchecked")
-	public void loageImageRetrievers(String location) throws FileNotFoundException {
+	public void loageImageRetrievers(String location, int timeoutMS) throws FileNotFoundException {
 		XMLDecoder d = new XMLDecoder(new BufferedInputStream(new FileInputStream(location)));
 		Object result = d.readObject();
 		for (ImageRetriever tempIR: (List<ImageRetriever>)result){
@@ -47,7 +47,7 @@ public class ImageRetrieverService {
 		}
 		d.close();
 
-		makeQueueRetrievers();
+		makeQueueRetrievers(timeoutMS);
 		scheduleThreads();
 
 	}
@@ -60,9 +60,9 @@ public class ImageRetrieverService {
 		}
 	}
 
-	void makeQueueRetrievers() {
+	void makeQueueRetrievers(int timeoutMS) {
 		for (ImageRetriever ir : imageRetrievers.values()) {
-			queueIR.put(ir.getID(), new QueueImageService(ir));
+			queueIR.put(ir.getID(), new QueueImageService(ir, timeoutMS));
 		}
 	}
 
