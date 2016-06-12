@@ -32,6 +32,8 @@ You will need the pre-requisites to build and run.
 ## TODOs
 1. UI [](https://github.com/aunfl0w/frozen-particle-waves-gui "frozen-particle-waves-gui") 
 2. Get minimal working app.
-3. Figure out what next. 
+* Support Basic Auth Web Cameras
+* Run as proxy to cameras of existing system
+
 
 
