@@ -15,15 +15,21 @@
    </object>
   </void>
   <void method="add">
-   <object class="fpw.domain.image.camera.BasicURLCamera">
+   <object class="fpw.domain.image.camera.BasicAuthURLCamera">
     <void property="ID">
      <string>two</string>
     </void>
     <void property="contentType">
      <string>image/gif</string>
     </void>
+    <void property="password">
+     <string>password</string>
+    </void>
     <void property="url">
      <string>http://192.168.100.1/logo.gif</string>
+    </void>
+    <void property="username">
+     <string>username</string>
     </void>
    </object>
   </void>

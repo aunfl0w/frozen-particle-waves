@@ -27,7 +27,7 @@ public class BasicURLCamera implements ImageRetriever {
 		ByteArrayOutputStream bos = null;
 
 		try {
-			is = u.openStream();
+			is = getInputStream(u);
 			bos = new ByteArrayOutputStream();
 			byte buff[] = new byte[1024];
 			int result = -1;
@@ -46,7 +46,15 @@ public class BasicURLCamera implements ImageRetriever {
 		return image;
 	}
 
-	@JsonIgnore public String getUrl() {
+	@JsonIgnore
+	InputStream getInputStream(URL u) throws IOException {
+		InputStream is;
+		is = u.openStream();
+		return is;
+	}
+
+	@JsonIgnore 
+	public String getUrl() {
 		return url;
 	}
 
