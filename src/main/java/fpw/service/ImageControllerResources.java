@@ -1,7 +1,9 @@
 package fpw.service;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +22,12 @@ public class ImageControllerResources {
 
 	@Autowired
 	ImageRetrieverService imageRS;
+	
+	@RequestMapping("/camera/status")
+	public String getStatus(Principal p){
+		System.out.println("Principal is " + p.getName());
+		return (new Date()).toString();
+	}
 
 	@RequestMapping("/camera/info")
 	public Collection<ImageRetriever> getInfo(HttpServletResponse response) throws IOException {
