@@ -18,19 +18,4 @@ public class SpringBootApp {
 
 	}
 	
-	
-	@Bean
-	public EmbeddedServletContainerFactory servletContainer() {
-	    TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory(){
-
-			@Override
-			protected TomcatEmbeddedServletContainer getTomcatEmbeddedServletContainer(Tomcat tomcat) {
-				((StandardHost)tomcat.getHost()).setErrorReportValveClass("");
-				return super.getTomcatEmbeddedServletContainer(tomcat);
-			}
-	    };
-	    return tomcat;
-	}
-
-	
 }
