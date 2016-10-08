@@ -9,18 +9,18 @@ import fpw.domain.image.ImageRetriever;
 
 public class QueueImageService implements Runnable {
 	ImageRetriever ir;
-	int timeoutMS = 15000;
+	int requestWait = 15000;
 	List<Image> images = Collections.synchronizedList(new ArrayList<Image>());
 
 	public QueueImageService(ImageRetriever ir2, int timeoutMS) {
 		ir = ir2;
-		this.timeoutMS = timeoutMS;
+		this.requestWait = timeoutMS;
 	}
 
 	public void run() {
 		while (true) {
 			try {
-				Thread.sleep(timeoutMS);
+				Thread.sleep(requestWait);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

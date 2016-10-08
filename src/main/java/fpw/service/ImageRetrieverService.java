@@ -34,8 +34,8 @@ public class ImageRetrieverService {
 	}
 
 	@Autowired
-	public ImageRetrieverService(@Value("${camera.config.file}") String configFile, @Value("${camera.config.timeoutMS:15000}") int timeoutMS ) throws FileNotFoundException {
-		loageImageRetrievers(configFile, timeoutMS);
+	public ImageRetrieverService(@Value("${camera.config.file}") String configFile, @Value("${camera.config.requestWait:15000}") int requestWait ) throws FileNotFoundException {
+		loageImageRetrievers(configFile, requestWait);
 	}
 
 	@SuppressWarnings("unchecked")
