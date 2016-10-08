@@ -9,6 +9,9 @@
     <void property="contentType">
      <string>image/jpg</string>
     </void>
+    <void property="description">
+     <string>Main Camera</string>
+    </void>
     <void property="url">
      <string>http://192.168.1.2:8080/photo.jpg</string>
     </void>
@@ -21,6 +24,9 @@
     </void>
     <void property="contentType">
      <string>image/gif</string>
+    </void>
+    <void property="description">
+     <string>Logo Image</string>
     </void>
     <void property="password">
      <string>password</string>

@@ -13,6 +13,7 @@ public class TestCameras {
 		BasicAuthURLCamera baurlc = new BasicAuthURLCamera();
 		baurlc.setUsername("username");
 		baurlc.setPassword("password");
+		baurlc.setDescription("test");
 		String actual = baurlc.generateBAString();
 		
 		assertEquals(expected, actual);

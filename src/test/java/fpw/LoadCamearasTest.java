@@ -47,12 +47,14 @@ public class LoadCamearasTest {
 		BasicURLCamera c = new BasicURLCamera();
 		c.setUrl("http://192.168.1.2:8080/photo.jpg");
 		c.setContentType("image/jpg");
+		c.setDescription("Main Camera");
 		c.setID("one");
 		lcs.add(c);
 		
 		BasicAuthURLCamera bac = new BasicAuthURLCamera();
 		bac.setUrl("http://192.168.100.1/logo.gif");
 		bac.setContentType("image/gif");
+		bac.setDescription("Logo Image");
 		bac.setID("two");
 		bac.setUsername("username");
 		bac.setPassword("password");
