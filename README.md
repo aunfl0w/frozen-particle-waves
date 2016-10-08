@@ -4,7 +4,7 @@ Frozen particle waves is a starting place to add IoT type monitoring for cameras
 
 ## First Features
 The first goal is to get a working camera monitoring framework.  This will capture images from various 
-network cameras in a flexible and extensible manner.  A minimally functional UI needs to be added as well.
+network cameras in a flexible and extensible manner.  A minimally functional UI is included in the app also.
 
 ## Architecture
 One of the other goals is to provide a learning project for spring boot.  The UI will also likely be built with Angular.
@@ -27,11 +27,5 @@ You will need the pre-requisites to build and run.
 4. Copy the ImageRetrievers.xml file to another location and customize it as needed.
 5. Start the application with this command
 	java -jar target/frozen-particle-waves-0.0.1-SNAPSHOT.jar --camera.config.file=<full path to your file>
-
-
-## TODOs
-* UI [](https://github.com/aunfl0w/frozen-particle-waves-gui "frozen-particle-waves-gui") 
-* Run as proxy to cameras of existing system
-
 
 
