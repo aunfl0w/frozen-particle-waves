@@ -15,7 +15,7 @@ angular.module('fpwApp')
 	    $timeout(function() {
 	      $scope.timestamp = (new Date()).getTime();
 	      $scope.intervalFunction();
-	    }, 20000)
+	    }, 31000)
 	  };
 
 	  $scope.intervalFunction();

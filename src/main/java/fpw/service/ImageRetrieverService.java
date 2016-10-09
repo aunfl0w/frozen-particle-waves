@@ -5,9 +5,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,13 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import fpw.domain.image.Image;
 import fpw.domain.image.ImageRetriever;
+import fpw.service.storage.ImageStorage;
 
 @Component
 public class ImageRetrieverService {
+	
+	ImageStorageService imageStorageService;
 
-	//private List<ImageRetriever> imageRetrievers = null;
 	private Map<String, ImageRetriever> imageRetrievers = new HashMap<String, ImageRetriever>();
 	private Map<String, QueueImageService> queueIR = new HashMap<String, QueueImageService>();
 
@@ -34,7 +33,10 @@ public class ImageRetrieverService {
 	}
 
 	@Autowired
-	public ImageRetrieverService(@Value("${camera.config.file}") String configFile, @Value("${camera.config.requestWait:15000}") int requestWait ) throws FileNotFoundException {
+	public ImageRetrieverService(@Value("${camera.config.file}") String configFile, 
+								 @Value("${camera.config.requestWait:15000}") int requestWait,
+								 ImageStorageService iss) throws FileNotFoundException {
+		imageStorageService = iss;
 		loageImageRetrievers(configFile, requestWait);
 	}
 
@@ -62,15 +64,15 @@ public class ImageRetrieverService {
 
 	void makeQueueRetrievers(int timeoutMS) {
 		for (ImageRetriever ir : imageRetrievers.values()) {
-			queueIR.put(ir.getID(), new QueueImageService(ir, timeoutMS));
+			queueIR.put(ir.getID(), new QueueImageService(ir, timeoutMS, imageStorageService));
 		}
 	}
 
-	public Image getFirstImage(String ID) throws IOException {
+	public ImageStorage getFirstImage(String ID) throws IOException {
 		return queueIR.get(ID).getFirst();
 	}
 	
-	public Image getImageAt(String ID, int index) throws IOException {
+	public ImageStorage getImageAt(String ID, int index) throws IOException {
 		return queueIR.get(ID).getAt(index);
 	}
 		

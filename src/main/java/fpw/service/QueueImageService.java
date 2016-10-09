@@ -6,14 +6,17 @@ import java.util.List;
 
 import fpw.domain.image.Image;
 import fpw.domain.image.ImageRetriever;
+import fpw.service.storage.ImageStorage;
 
 public class QueueImageService implements Runnable {
 	ImageRetriever ir;
+	ImageStorageService iss; 
 	int requestWait = 15000;
-	List<Image> images = Collections.synchronizedList(new ArrayList<Image>());
+	List<ImageStorage> images = Collections.synchronizedList(new ArrayList<ImageStorage>());
 
-	public QueueImageService(ImageRetriever ir2, int timeoutMS) {
+	public QueueImageService(ImageRetriever ir2, int timeoutMS, ImageStorageService imageStorageService) {
 		ir = ir2;
+		iss = imageStorageService;
 		this.requestWait = timeoutMS;
 	}
 
@@ -28,7 +31,9 @@ public class QueueImageService implements Runnable {
 			try {
 				System.out.println("Gettimg Image from " + ir.toString());
 				Image image = ir.getImage();
-				images.add(0, image);
+				ImageStorage is = iss.getImageStorageInstance();
+				is.saveBytes(image);
+				images.add(0, is);
 				if (images.size() > 10) {
 					System.out.println("removing " + (images.size() - 1));
 					images.remove(images.size() - 1);
@@ -41,11 +46,11 @@ public class QueueImageService implements Runnable {
 		}
 	}
 
-	public Image getFirst() {
+	public ImageStorage getFirst() {
 		return getAt(0);
 	}
 
-	public Image getAt(int i) {
+	public ImageStorage getAt(int i) {
 		return images.get(i);
 	}
 

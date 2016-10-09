@@ -8,7 +8,16 @@ public class Image {
 	 * used in the content type header
 	 */
 	String contentType = "";
+	String id = "";
+	
+	public Image(String id, String contentType){
+		this.contentType = contentType;
+		this.id = id;
+	}
 
+	public String getId() {
+		return id;
+	}
 	public byte[] getData() {
 		return data;
 	}
@@ -17,8 +26,5 @@ public class Image {
 	}
 	public String getContentType() {
 		return contentType;
-	}
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
 	}
 }

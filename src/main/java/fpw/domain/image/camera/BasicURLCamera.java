@@ -15,14 +15,14 @@ public class BasicURLCamera implements ImageRetriever {
 
 	String url;
 	String contentType;
-	String name;
+	String id;
 	String description;
 	
 
 	@Override
 	public Image getImage() throws IOException {
 		URL u = new URL(url);
-		Image image = new Image();
+		Image image = new Image(id, contentType);
 		byte data[] = null;
 
 		InputStream is = null;
@@ -44,7 +44,6 @@ public class BasicURLCamera implements ImageRetriever {
 		}
 
 		image.setData(data);
-		image.setContentType(contentType);
 		return image;
 	}
 
@@ -79,12 +78,12 @@ public class BasicURLCamera implements ImageRetriever {
 
 	@Override
 	public String getID() {
-		return name;
+		return id;
 	}
 
 	@Override
 	public void setID(String name) {
-		this.name = name;
+		this.id = name;
 	}
 
 	public String getDescription() {
