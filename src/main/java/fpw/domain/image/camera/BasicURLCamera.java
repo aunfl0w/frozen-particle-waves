@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,14 +31,17 @@ public class BasicURLCamera implements ImageRetriever {
 
 		try {
 			is = getInputStream(u);
+			
 			bos = new ByteArrayOutputStream();
 			byte buff[] = new byte[1024];
 			int result = -1;
 			do {
-				result = is.read(buff);
+				result = is.read(buff); //need timeout
 				bos.write(buff, 0, result > 0 ? result : 0);
 			} while (result > 0);
 			data = bos.toByteArray();
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			bos.close();
 			is.close();
@@ -50,7 +54,14 @@ public class BasicURLCamera implements ImageRetriever {
 	@JsonIgnore
 	InputStream getInputStream(URL u) throws IOException {
 		InputStream is;
-		is = u.openStream();
+		URLConnection conn = u.openConnection();
+		conn.setConnectTimeout(30000);
+		conn.setReadTimeout(30000);
+		conn.setRequestProperty("User-Agent", 
+				String.format("Mozilla/5.0 (Java; %s; FPW 1.0.0)",
+				System.getProperty("java.version")));
+		conn.connect();
+		is = conn.getInputStream();
 		return is;
 	}
 
