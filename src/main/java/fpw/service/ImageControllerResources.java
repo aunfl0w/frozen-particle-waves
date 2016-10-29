@@ -73,7 +73,6 @@ public class ImageControllerResources {
 		
 		
 		response.setContentType(img.getContentType());
-		response.setContentLength(img.getLength());
 		
 		OutputStream os = response.getOutputStream();
 		ImageIO.write(buffImage, "jpg", os);
