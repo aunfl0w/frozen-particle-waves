@@ -1,5 +1,6 @@
 package fpw.service;
 
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +8,11 @@ import java.io.OutputStream;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,20 +62,25 @@ public class ImageControllerResources {
 	
 	
 	void writeImage(HttpServletResponse response, ImageStorage img) throws IOException, FileNotFoundException {
+		
+		BufferedImage buffImage = ImageIO.read(img.getInputStream());
+		Iterator<ImageWriter> imageWriters =  ImageIO.getImageWritersByMIMEType(img.getContentType());
+		ImageWriter imageWriter = imageWriters.next();
+		
+		ImageWriteParam parms  =  imageWriter.getDefaultWriteParam();
+		parms.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+		parms.setCompressionQuality(0.2f);
+		
+		
 		response.setContentType(img.getContentType());
 		response.setContentLength(img.getLength());
+		
 		OutputStream os = response.getOutputStream();
-		InputStream is = img.getInputStream();
-		byte [] buff = new byte[1024];
-		int size = 0; 
-		do {
-			size = is.read(buff);
-			if (size > 0)
-				os.write(buff, 0, size);
-			
-		} while (size > 0);
-		is.close();
+		ImageIO.write(buffImage, "jpg", os);
+		
 		
 		response.flushBuffer();
+		imageWriter.dispose();
+		os.close();
 	}
 }

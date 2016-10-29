@@ -22,11 +22,16 @@ public class FileStorage implements ImageStorage {
 	@Override
 	public void saveBytes(Image image) {
 
+		File checkPath = new File(path + File.separator + image.getId() + File.separator);
+		checkPath.mkdirs();
+
 		mimeType  = image.getContentType();
 		length = image.getData().length;
 		path = path + File.separator + image.getId() 
 				    + File.separator + System.currentTimeMillis() 
 				    + getExtentionFromMimeType(mimeType);
+
+		
 
 		
 		FileOutputStream fos = null;

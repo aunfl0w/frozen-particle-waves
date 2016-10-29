@@ -46,7 +46,7 @@ public class LoadCamearasTest {
 		List<ImageRetriever> lcs = new ArrayList<ImageRetriever>();
 		BasicURLCamera c = new BasicURLCamera();
 		c.setUrl("http://192.168.1.2:8080/photo.jpg");
-		c.setContentType("image/jpg");
+		c.setContentType("image/jpeg");
 		c.setDescription("Main Camera");
 		c.setID("one");
 		lcs.add(c);
