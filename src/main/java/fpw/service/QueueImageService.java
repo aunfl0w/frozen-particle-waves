@@ -23,12 +23,6 @@ public class QueueImageService implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-				Thread.sleep(requestWait);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
 				System.out.println("Gettimg Image from " + ir.toString());
 				Image image = ir.getImage();
 				ImageStorage is = iss.getImageStorageInstance();
@@ -40,8 +34,12 @@ public class QueueImageService implements Runnable {
 
 				}
 			} catch (Throwable t) {
-				// TODO use correct logging
 				System.out.println(t);
+			}
+			try {
+				Thread.sleep(requestWait);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
