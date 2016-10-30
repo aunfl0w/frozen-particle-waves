@@ -7,7 +7,7 @@
      <string>one</string>
     </void>
     <void property="contentType">
-     <string>image/jpg</string>
+     <string>image/jpeg</string>
     </void>
     <void property="description">
      <string>Main Camera</string>

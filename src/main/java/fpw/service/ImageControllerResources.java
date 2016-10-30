@@ -1,9 +1,10 @@
 package fpw.service;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Principal;
 import java.util.Collection;
@@ -39,8 +40,6 @@ public class ImageControllerResources {
 
 	@RequestMapping("/camera/info")
 	public Collection<ImageRetriever> getInfo(HttpServletResponse response) throws IOException {
-		//response.getWriter().println(String.format("{\"count\": %d }", imageRS.getImageRetrievers().size()));
-		//getClass().response.flushBuffer();
 		return imageRS.getImageRetrievers().values();
 	}
 	
@@ -63,20 +62,28 @@ public class ImageControllerResources {
 	
 	void writeImage(HttpServletResponse response, ImageStorage img) throws IOException, FileNotFoundException {
 		
+		response.setContentType(img.getContentType());
+
+		//read image
 		BufferedImage buffImage = ImageIO.read(img.getInputStream());
+		
+		//scale image
+		Image scaledImage = buffImage.getScaledInstance(buffImage.getWidth() / 2, buffImage.getHeight() / 2 , java.awt.Image.SCALE_SMOOTH);
+		BufferedImage scaledBuffImage = new BufferedImage( scaledImage.getWidth(null), scaledImage.getHeight(null), buffImage.getType());
+		Graphics2D graphics = scaledBuffImage.createGraphics();
+		graphics.drawImage(scaledImage,0,0,null);
+		graphics.dispose();
+		
+		//compress image
 		Iterator<ImageWriter> imageWriters =  ImageIO.getImageWritersByMIMEType(img.getContentType());
 		ImageWriter imageWriter = imageWriters.next();
-		
 		ImageWriteParam parms  =  imageWriter.getDefaultWriteParam();
 		parms.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-		parms.setCompressionQuality(0.2f);
+		parms.setCompressionQuality(0.15f);
 		
-		
-		response.setContentType(img.getContentType());
-		
+		//write image
 		OutputStream os = response.getOutputStream();
-		ImageIO.write(buffImage, "jpg", os);
-		
+		ImageIO.write(scaledBuffImage, "jpg", os);
 		
 		response.flushBuffer();
 		imageWriter.dispose();
