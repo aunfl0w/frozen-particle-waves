@@ -39,18 +39,16 @@ public class ImageControllerResources {
 	}
 
 	@RequestMapping("/camera/info")
-	public Collection<ImageRetriever> getInfo(HttpServletResponse response) throws IOException {
+	public Collection<ImageRetriever> getInfo() throws IOException {
 		return imageRS.getImageRetrievers().values();
 	}
 	
-
 	@RequestMapping(path = "/camera/{cameraID}/image", method = RequestMethod.GET)
 	@ResponseBody
 	public void getImage(@PathVariable String cameraID, HttpServletResponse response) throws Throwable {
 		ImageStorage img = imageRS.getFirstImage(cameraID);
 		writeImage(response, img);
 	}
-
 	
 	@RequestMapping(path = "/camera/{cameraID}/image/{imageID}", method = RequestMethod.GET)
 	@ResponseBody
@@ -58,7 +56,6 @@ public class ImageControllerResources {
 		ImageStorage img = imageRS.getImageAt(cameraID, imageID);
 		writeImage(response, img);
 	}
-	
 	
 	void writeImage(HttpServletResponse response, ImageStorage img) throws IOException, FileNotFoundException {
 		

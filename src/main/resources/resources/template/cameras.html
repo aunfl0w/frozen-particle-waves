@@ -1,8 +1,9 @@
 <h2>Cameras</h2>
 
-
-<div ng-repeat="camera in cameralist">
+<div ng-repeat="camera in cameralist" class="image-animated">
 <h3>{{camera.description}}</h3>
-<img ng-src="/fpw/camera/{{camera.id}}/image?{{timestamp}}" alt="{{camera.description}}" width="90%" />
+<a href="#/camera/{{camera.id}}/recent">
+<img class="{{camera.style}}" ng-src="{{camera.url}}" alt="{{camera.description}}" width="100%" />
+</a>
 </div>
 
