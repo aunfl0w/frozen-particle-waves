@@ -1,24 +1,15 @@
 # frozen-particle-waves
 See the file LICENSE for license.
-Frozen particle waves is a starting place to add IoT type monitoring for cameras devices etc.  
+Frozen particle waves is a security and aggregation front and end for IoT devices such as cameras.  
 
-## First Features
-The first goal is to get a working camera monitoring framework.  This will capture images from various 
-network cameras in a flexible and extensible manner.  A minimally functional UI is included in the app also.
 
-## Architecture
-One of the other goals is to provide a learning project for spring boot.  The UI will also likely be built with Angular.
+## Goals
+* Learning project for spring boot.  
+* Learning project for client side UI.
+* IoT hardware learning.
 
 ## How it may be used
-The goal is that you could run this on a computer in a location that has network devices that you configure it 
-to gather information from.  It would then provide a consolidate view of that information and provide additional 
-features such as storing data, showing trends.
-
-### How to build and run
-You will need the pre-requisites to build and run. 
-
-1. java 8 jdk
-2. maven (mvn)
+Run FPW in a network with IoT devices to centralize data and coordinate access and distribution.
 
 #### Build Configure and Run
 1. Clone the repo git clone https://github.com/aunfl0w/frozen-particle-waves.git
