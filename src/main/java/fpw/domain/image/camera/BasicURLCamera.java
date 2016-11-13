@@ -20,6 +20,7 @@ public class BasicURLCamera implements ImageRetriever {
 	String description;
 	
 
+
 	@Override
 	public Image getImage() throws IOException {
 		URL u = new URL(url);
@@ -70,10 +71,6 @@ public class BasicURLCamera implements ImageRetriever {
 		return url;
 	}
 
-	@Override
-	public String toString() {
-		return getUrl();
-	}
 
 	public void setUrl(String url) {
 		this.url = url;
@@ -105,4 +102,9 @@ public class BasicURLCamera implements ImageRetriever {
 		this.description = description;
 	}
 	
+	@Override
+	public String toString() {
+		return "BasicURLCamera [url=" + url + ", contentType=" + contentType + ", id=" + id + ", description="
+				+ description + "]";
+	}
 }

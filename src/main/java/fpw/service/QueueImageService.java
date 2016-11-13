@@ -34,6 +34,7 @@ public class QueueImageService implements Runnable {
 
 				}
 			} catch (Throwable t) {
+				System.out.println(ir.toString());
 				System.out.println(t);
 			}
 			try {
