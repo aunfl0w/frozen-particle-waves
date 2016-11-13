@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,17 +33,19 @@ public class FileStorage implements ImageStorage {
 
 	@Override
 	public void saveBytes(Image image) {
-
-		File checkPath = new File(path + File.separator + image.getId() + File.separator);
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String dateString = format.format(new Date());
+		String basePath = path + File.separator + image.getId() + File.separator + dateString + File.separator;
+		
+		File checkPath = new File(basePath);
 		checkPath.mkdirs();
 
 		mimeType  = image.getContentType();
 		length = image.getData().length;
-		path = path + File.separator + image.getId() 
-				    + File.separator + System.currentTimeMillis() 
+		path = basePath + System.currentTimeMillis() 
 				    + getExtentionFromMimeType(mimeType);
 
-		
 
 		
 		FileOutputStream fos = null;
