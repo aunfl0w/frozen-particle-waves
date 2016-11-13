@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import fpw.domain.image.Image;
 
@@ -14,6 +16,14 @@ public class FileStorage implements ImageStorage {
 	String path;
 	String mimeType;
 	int length = 0;
+	
+	private static Map<String, String> MIME_TO_FILE = new HashMap<String,String>();
+	static 	{
+		MIME_TO_FILE.put("image/jpeg", ".jpg");
+		MIME_TO_FILE.put("image/jpg", ".jpg");
+		MIME_TO_FILE.put("image/gif", ".gif");
+		
+	}
 	
 	public FileStorage(String path) {
 		this.path = path;
@@ -63,13 +73,8 @@ public class FileStorage implements ImageStorage {
 	
 	private String getExtentionFromMimeType(String mimeType) {
 		// TODO use a mimetype to ext library.
-		if (mimeType.contains("jpg")) {
-			return ".jpg";
-		} else if (mimeType.contains("gif")) {
-			return ".gif";
-		}
-		
-		return ".unknown";
+		String extension = MIME_TO_FILE.get(mimeType);
+		return extension == null ? ".unknown" : extension;
 	}
 
 
