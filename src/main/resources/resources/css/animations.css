@@ -41,3 +41,9 @@
 	border-radius: 5%;
 	transition: 0.5s linear all;
 }
+
+.login-form {
+max-width: 330px;
+padding: 15px;
+margin: 0 auto;
+}

@@ -1,6 +1,12 @@
-  <form novalidate class="login">
-    User Name: <input type="text" ng-model="user.userName" /> <br/>
-    Password: <input type="password"  ng-model="user.password" /> <br/>
-    <input type="submit" ng-click="login(user)" value="Login" />
-  </form>
-  {{status}}
+
+    <div class="container">
+
+	  <form novalidate class="login-form">
+	    <label for="inputUsername">User Name: </label> <input id="inputUsername" class="form-control" type="text" ng-model="user.userName" autofocus="autofocus" /> <br/>
+	    <label for="inputPassword"> Password: </label> <input id="inputPassword" class="form-control" type="password"  ng-model="user.password" /> <br/>
+	    <label for="status"> Login Status: </label>{{status}}
+	    <input class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login(user)" value="Login" />
+	  </form>
+	  
+
+    </div> <!-- /container -->
