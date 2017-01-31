@@ -56,7 +56,7 @@ public class ImageRetrieverService {
 
 	private void scheduleThreads() {
 		for (QueueImageService qir : queueIR.values()) {
-			Thread t = new Thread(qir);
+			Thread t = new Thread(qir,qir.ir.getID() + " Thread");
 			t.setDaemon(true);
 			t.start();
 		}
