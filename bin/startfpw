@@ -1,0 +1,36 @@
+#!/bin/bash 
+
+cd "$(dirname ${BASH_SOURCE[0]})"
+
+if [ ! -f ./settings ] 
+then
+echo Cannot find settings file.  Rename and edit settings.tmplate.
+exit
+fi
+. ./settings
+
+TIMESTAMP=$(date +%F:%N)
+if [ ! -d $DATA_PATH ] 
+then
+/bin/mkdir $DATA_PATH
+fi
+
+/usr/bin/java \
+-jar frozen-particle-waves-0.0.1-SNAPSHOT.jar \
+--authn.password.admin=$ADMIN_PASS \
+--authn.password.user=$STANDARD_PASS \
+--endpoints.shutdown.sensitive=false \
+--endpoints.shutdown.enabled=true \
+--camera.config.file=$CAMERA_CONFIG \
+--camera.config.storage.file.path=$DATA_PATH \
+-Djava.security.egd=file:/dev/./urandom \
+-server \
+-Xmx500m \
+-XX:+UseG1GC \
+-XX:MaxGCPauseMillis=200 \
+-XX:ParallelGCThreads=1 \
+-XX:ConcGCThreads=1 \
+-XX:InitiatingHeapOccupancyPercent=70 \
+-d32 > $DATA_PATH/SystemOut$TIMESTAMP.log 2>&1 &
+
+echo Starting ......

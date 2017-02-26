@@ -1,0 +1,14 @@
+#Location of saved images and logs
+#example  /home/mylogin/fpwdata
+DATA_PATH=/tmp/
+
+#Admin password
+ADMIN_PASS=
+
+#Standard user name
+STANDARD_PASS=
+
+#Camera Config file path
+#Example       /home/mylogin/Cameras.xml
+CAMERA_CONFIG=/home/dad/Cameras.xml
+
