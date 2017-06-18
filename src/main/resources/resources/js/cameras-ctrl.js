@@ -1,8 +1,21 @@
 angular.module('fpwApp')
-.controller('camerasCtrl', function($scope, $http, $location, $timeout){
+.controller('camerasCtrl', function($scope, $http, $location, $timeout, SocketService){
 	var originalCameraList;
 	$scope.cameralist = [];
 	
+	SocketService.callbacks.notifyUpdateCamera = function(cameraUpdated){
+			var index = 0;
+			var x = 0;
+			for (x = 0;x < $scope.cameralist.length; x++){
+				if($scope.cameralist[x].id === cameraUpdated){
+					index = x;
+				}
+			}
+		
+			fadeUpdate(index);
+		};
+
+		
 	$http.get('/fpw/camera/info').then(function(goodResponse) {
 		$scope.cameralist = goodResponse.data;
 		originalCameraList = goodResponse.data;
@@ -13,15 +26,14 @@ angular.module('fpwApp')
 			'/image?' + timestamp;
 			$scope.cameralist[count].style='';
 		}
-		intervalFunction();
 		fadeUpdate();
 	}, function(badResponse) {
 		$location.path('/login');
 	});
 	
-	var index =  0;
 	
-	var fadeUpdate = function() {
+	
+	var fadeUpdate = function(index) {
 
 		$scope.cameralist[index].style='trasition-out';
 		var timestamp = (new Date()).getTime();
@@ -29,26 +41,10 @@ angular.module('fpwApp')
 		'/image?' + timestamp;
 
 			$timeout(function(){
-				
 				$scope.cameralist[index].style='trasition-in';
-
-				index++;
-
-				if (index < originalCameraList.length){
-					fadeUpdate();
-				} 
-				$scope.index = index;
-				
 			}, 500);
 			
 	}
-	var intervalFunction = function() {
-		$timeout(function() {
-			index = 0;
-			fadeUpdate();
-			intervalFunction();
-		}, 31000);
-	};
 
 	  
 	

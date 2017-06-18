@@ -9,11 +9,14 @@ import fpw.domain.image.ImageRetriever;
 import fpw.service.storage.ImageStorage;
 
 public class QueueImageService implements Runnable {
+	WebSocketNotifier wsn = null;
 	ImageRetriever ir;
 	ImageStorageService iss; 
 	int requestWait = 15000;
 	List<ImageStorage> images = Collections.synchronizedList(new ArrayList<ImageStorage>());
-
+	
+	public QueueImageService(){}
+	
 	public QueueImageService(ImageRetriever ir2, int timeoutMS, ImageStorageService imageStorageService) {
 		ir = ir2;
 		iss = imageStorageService;
@@ -27,6 +30,7 @@ public class QueueImageService implements Runnable {
 				Image image = ir.getImage();
 				ImageStorage is = iss.getImageStorageInstance();
 				is.saveBytes(image);
+				notifyClients(ir.getID());
 				images.add(0, is);
 				if (images.size() > 10) {
 					System.out.println("removing " + (images.size() - 1));
@@ -36,12 +40,23 @@ public class QueueImageService implements Runnable {
 			} catch (Throwable t) {
 				System.out.println(ir.toString());
 				System.out.println(t);
+				t.printStackTrace();
 			}
 			try {
 				Thread.sleep(requestWait);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+
+
+	private void notifyClients(String id) {
+		if (wsn == null){
+			System.err.println("wsn is null. cannot notify about " + id);
+		}else{
+			wsn.announceUpdate(id);
 		}
 	}
 
@@ -51,6 +66,10 @@ public class QueueImageService implements Runnable {
 
 	public ImageStorage getAt(int i) {
 		return images.get(i);
+	}
+
+	public void setNotifier(WebSocketNotifier wsn) {
+		this.wsn = wsn;
 	}
 
 }

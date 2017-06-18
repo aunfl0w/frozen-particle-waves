@@ -21,6 +21,8 @@ public class ImageRetrieverService {
 	
 	ImageStorageService imageStorageService;
 
+	WebSocketNotifier wsn;
+
 	private Map<String, ImageRetriever> imageRetrievers = new HashMap<String, ImageRetriever>();
 	private Map<String, QueueImageService> queueIR = new HashMap<String, QueueImageService>();
 
@@ -35,8 +37,10 @@ public class ImageRetrieverService {
 	@Autowired
 	public ImageRetrieverService(@Value("${camera.config.file}") String configFile, 
 								 @Value("${camera.config.requestWait:15000}") int requestWait,
-								 ImageStorageService iss) throws FileNotFoundException {
+								 ImageStorageService iss,
+								 WebSocketNotifier wsn) throws FileNotFoundException {
 		imageStorageService = iss;
+		this.wsn = wsn;
 		loageImageRetrievers(configFile, requestWait);
 	}
 
@@ -56,6 +60,7 @@ public class ImageRetrieverService {
 
 	private void scheduleThreads() {
 		for (QueueImageService qir : queueIR.values()) {
+			qir.setNotifier(wsn);
 			Thread t = new Thread(qir,qir.ir.getID() + " Thread");
 			t.setDaemon(true);
 			t.start();

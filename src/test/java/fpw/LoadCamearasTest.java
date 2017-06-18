@@ -67,7 +67,7 @@ public class LoadCamearasTest {
 
 	@Test
 	public void a_list_of_cameras_can_be_read_from_xml() throws Exception {
-		ImageRetrieverService imageRS = new ImageRetrieverService("src/test/resources/ImageRetrievers.xml",1000, null);
+		ImageRetrieverService imageRS = new ImageRetrieverService("src/test/resources/ImageRetrievers.xml",1000, null,null);
 		Map<String,ImageRetriever> x = imageRS.getImageRetrievers();
 		assertEquals("http://192.168.1.2:8080/photo.jpg", ((BasicURLCamera)x.get("one")).getUrl());
 		assertEquals("image/jpeg", ((BasicURLCamera)x.get("one")).getContentType());

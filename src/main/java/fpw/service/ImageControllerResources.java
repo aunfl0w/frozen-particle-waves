@@ -32,8 +32,11 @@ public class ImageControllerResources {
 	@Autowired
 	ImageRetrieverService imageRS;
 	
+	@Autowired
+	WebSocketNotifier ws;
+	
 	@RequestMapping("/camera/status")
-	public String getStatus(Principal p){
+	public String getStatus(Principal p) throws Exception{
 		System.out.println("Principal is " + p.getName());
 		return (new Date()).toString();
 	}
@@ -48,6 +51,7 @@ public class ImageControllerResources {
 	public void getImage(@PathVariable String cameraID, HttpServletResponse response) throws Throwable {
 		ImageStorage img = imageRS.getFirstImage(cameraID);
 		writeImage(response, img);
+		
 	}
 	
 	@RequestMapping(path = "/camera/{cameraID}/image/{imageID}", method = RequestMethod.GET)
