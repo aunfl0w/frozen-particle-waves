@@ -24,9 +24,9 @@ angular.module('fpwApp')
 		for (count = 0; count < originalCameraList.length; count++) {
 			$scope.cameralist[count].url = '/fpw/camera/' + originalCameraList[count].id +
 			'/image?' + timestamp;
-			$scope.cameralist[count].style='';
+			$scope.cameralist[count].style='trasition-out';
+			fadeUpdate(count);
 		}
-		fadeUpdate();
 	}, function(badResponse) {
 		$location.path('/login');
 	});
