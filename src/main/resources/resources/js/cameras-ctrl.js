@@ -54,9 +54,9 @@ angular.module('fpwApp')
 .controller('cameraCtrl', function($scope, $http, $location, $timeout, $routeParams){
 	$scope.cameraId = $routeParams.cameraId;
 	$scope.imagelist = [];
-	//assume there will be 10 images
+	//assume there will be 20 images
 	var step;
-	for (step = 0; step < 10; step++){
+	for (step = 0; step < 20; step++){
 		$scope.imagelist.push('/fpw/camera/'+$routeParams.cameraId+'/image/'+step);
 	}
 					

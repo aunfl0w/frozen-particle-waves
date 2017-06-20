@@ -68,8 +68,27 @@ public class ImageControllerResources {
 		//read image
 		BufferedImage buffImage = ImageIO.read(img.getInputStream());
 		
+		float scaleby = 5.0f, qualityby = 0.2f;
+		
+		if (buffImage.getWidth() < 4000)
+			scaleby = 3.5f; qualityby = 0.14f;
+		if (buffImage.getWidth() < 3000)
+			scaleby = 2.5f; qualityby = 0.14f;
+		if (buffImage.getWidth() < 2000)
+			scaleby = 2.5f; qualityby = 0.175f;
+		if (buffImage.getWidth() < 1000)
+			scaleby = 1.75f; qualityby = 0.2f;
+		if (buffImage.getWidth() < 750)
+			scaleby = 1.0f; qualityby = 0.225f;
+		if (buffImage.getWidth() < 600)
+			scaleby = 1.0f; qualityby = 0.25f;
+
+		System.out.println(String.format("Image is %d by %d scale to %f quality to %f",buffImage.getWidth(), buffImage.getHeight(), scaleby, qualityby));
+			
 		//scale image
-		Image scaledImage = buffImage.getScaledInstance(buffImage.getWidth() / 2, buffImage.getHeight() / 2 , java.awt.Image.SCALE_SMOOTH);
+		Image scaledImage = buffImage.getScaledInstance((int)(buffImage.getWidth() / scaleby), 
+														(int)(buffImage.getHeight() / scaleby), 
+														java.awt.Image.SCALE_SMOOTH);
 		BufferedImage scaledBuffImage = new BufferedImage( scaledImage.getWidth(null), scaledImage.getHeight(null), buffImage.getType());
 		Graphics2D graphics = scaledBuffImage.createGraphics();
 		graphics.drawImage(scaledImage,0,0,null);
@@ -80,7 +99,7 @@ public class ImageControllerResources {
 		ImageWriter imageWriter = imageWriters.next();
 		ImageWriteParam parms  =  imageWriter.getDefaultWriteParam();
 		parms.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-		parms.setCompressionQuality(0.15f);
+		parms.setCompressionQuality(qualityby);
 		
 		//write image
 		OutputStream os = response.getOutputStream();

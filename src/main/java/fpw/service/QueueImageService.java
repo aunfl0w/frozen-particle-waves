@@ -32,7 +32,7 @@ public class QueueImageService implements Runnable {
 				is.saveBytes(image);
 				notifyClients(ir.getID());
 				images.add(0, is);
-				if (images.size() > 10) {
+				if (images.size() > 20) {
 					System.out.println("removing " + (images.size() - 1));
 					images.remove(images.size() - 1);
 
