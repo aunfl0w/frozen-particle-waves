@@ -25,6 +25,13 @@
 	<div ng-view></div>
 </div>
 
+<script>
+document.addEventListener('visibilitychange', function(e) {
+	if (!document.hidden) {
+		window.location.reload();
+	}
+});
+</script>
 
 </body>
 </html>
