@@ -1,0 +1,21 @@
+#!/bin/bash 
+OUTDIR=../src/main/resources/resources
+SIZE=120
+NAME=apple-touch-icon.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+SIZE=152
+NAME=apple-touch-icon-$SIZE.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+SIZE=167
+NAME=apple-touch-icon-$SIZE.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+SIZE=180
+NAME=apple-touch-icon-$SIZE.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+
+SIZE=128
+NAME=icon-normal.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+NAME=icon-hires.png
+/bin/cp largest.png $OUTDIR/$NAME
+
