@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import fpw.domain.image.FailImage;
 import fpw.domain.image.Image;
 import fpw.domain.image.ImageRetriever;
 import fpw.service.storage.ImageStorage;
@@ -15,6 +16,8 @@ public class QueueImageService implements Runnable {
 	int requestWait = 15000;
 	List<ImageStorage> images = Collections.synchronizedList(new ArrayList<ImageStorage>());
 	
+	
+	
 	public QueueImageService(){}
 	
 	public QueueImageService(ImageRetriever ir2, int timeoutMS, ImageStorageService imageStorageService) {
@@ -25,9 +28,16 @@ public class QueueImageService implements Runnable {
 
 	public void run() {
 		while (true) {
-			try {
 				System.out.println("Gettimg Image from " + ir.toString());
-				Image image = ir.getImage();
+				Image image = null;
+				try {
+					image = ir.getImage();
+				} catch (Throwable t) {
+					System.out.println(ir.toString());
+					System.out.println(t);
+					t.printStackTrace();
+					image = new FailImage(ir.getID());
+				}
 				ImageStorage is = iss.getImageStorageInstance();
 				is.saveBytes(image);
 				notifyClients(ir.getID());
@@ -37,11 +47,6 @@ public class QueueImageService implements Runnable {
 					images.remove(images.size() - 1);
 
 				}
-			} catch (Throwable t) {
-				System.out.println(ir.toString());
-				System.out.println(t);
-				t.printStackTrace();
-			}
 			try {
 				Thread.sleep(requestWait);
 			} catch (InterruptedException e) {
