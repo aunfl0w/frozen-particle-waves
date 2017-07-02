@@ -30,6 +30,7 @@ public class QueueImageService implements Runnable {
 		while (true) {
 				System.out.println("Gettimg Image from " + ir.toString());
 				Image image = null;
+				
 				try {
 					image = ir.getImage();
 				} catch (Throwable t) {
@@ -38,15 +39,21 @@ public class QueueImageService implements Runnable {
 					t.printStackTrace();
 					image = new FailImage(ir.getID());
 				}
-				ImageStorage is = iss.getImageStorageInstance();
-				is.saveBytes(image);
-				notifyClients(ir.getID());
-				images.add(0, is);
-				if (images.size() > 20) {
-					System.out.println("removing " + (images.size() - 1));
-					images.remove(images.size() - 1);
-
+				
+				try {
+					ImageStorage is = iss.getImageStorageInstance();
+					is.saveBytes(image);
+					notifyClients(ir.getID());
+					images.add(0, is);
+					if (images.size() > 20) {
+						System.out.println("removing " + (images.size() - 1));
+						images.remove(images.size() - 1);
+					}
+				} catch (Throwable t) {
+					System.out.println(t);
+					t.printStackTrace();
 				}
+
 			try {
 				Thread.sleep(requestWait);
 			} catch (InterruptedException e) {
