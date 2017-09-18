@@ -14,3 +14,6 @@ CAMERA_CONFIG=/home/dad/Cameras.xml
 
 #uncomment to enable remote deubg.
 #REMOTE_DEBUG=-agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n
+
+#image update frequency in MS
+IMAGE_UPDATE_MS=25000

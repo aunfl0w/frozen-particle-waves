@@ -23,6 +23,7 @@ fi
 --endpoints.shutdown.enabled=true \
 --camera.config.file=$CAMERA_CONFIG \
 --camera.config.storage.file.path=$DATA_PATH \
+--camera.config.requestWait=$IMAGE_UPDATE_MS \
 -Djava.security.egd=file:/dev/./urandom \
 -server \
 -Xmx500m \
