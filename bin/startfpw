@@ -32,6 +32,7 @@ fi
 -XX:ParallelGCThreads=1 \
 -XX:ConcGCThreads=1 \
 -XX:InitiatingHeapOccupancyPercent=70 \
+-Dsun.net.client.defaultReadTimeout=20000 \
 -d32 > $DATA_PATH/SystemOut$TIMESTAMP.log 2>&1 &
 
 echo Starting ......
