@@ -1,8 +1,12 @@
-
-<div ng-repeat="camera in cameralist" class="image-animated">
-<h3>{{camera.description}}</h3>
-<a href="#/camera/{{camera.id}}/recent">
-<img class="{{camera.style}}" ng-src="{{camera.url}}" alt="{{camera.description}}" width="100%" />
-</a>
+<div class="row">
+	<div ng-repeat="camera in cameralist" class="image-animated">
+		<div class="clearfix" ng-if="$index % 2 == 0"></div>
+			<div class="col-sm-6">
+				<h3>{{camera.description}}</h3>
+				<a href="#/camera/{{camera.id}}/recent"> 
+					<img class="{{camera.style}}" ng-src="{{camera.url}}" alt="{{camera.description}}" />
+			</a>
+		</div>
+	</div>
 </div>
 

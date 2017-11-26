@@ -34,12 +34,16 @@
 	opacity: 1;
 	border-radius: 5%;
 	transition: 0.5s linear all;
+	max-height: 100%;
+    max-width: 100%;
 }
 
 .trasition-out {
 	opacity: 0.5;
 	border-radius: 5%;
 	transition: 0.5s linear all;
+	max-height: 100%;
+    max-width: 100%;
 }
 
 .login-form {

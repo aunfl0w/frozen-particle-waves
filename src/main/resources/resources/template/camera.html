@@ -1,7 +1,11 @@
-
-<div ng-repeat="url in imagelist" class="image-animated">
-<a href="#/cameras">
-<img ng-src="{{url}}" width="100%" class="image-animated trasition-in" />
-</a>
-<br/><br/>
+<div class="row">
+	<div ng-repeat="url in imagelist" class="image-animated">
+		<div class="clearfix" ng-if="$index % 3 == 0"></div>
+			<div class="col-sm-4">
+				<a href="#/cameras">
+					<img ng-src="{{url}}" class="image-animated trasition-in" />
+				</a>
+		</div>
+	</div>
 </div>
+
