@@ -27,39 +27,47 @@ public class QueueImageService implements Runnable {
 	}
 
 	public void run() {
-		while (true) {
-				System.out.println("Gettimg Image from " + ir.toString());
-				Image image = null;
-				
-				try {
-					image = ir.getImage();
-				} catch (Throwable t) {
-					System.out.println(ir.toString());
-					System.out.println(t);
-					t.printStackTrace();
-					image = new FailImage(ir.getID());
-				}
-				
-				try {
-					ImageStorage is = iss.getImageStorageInstance();
-					is.saveBytes(image);
-					notifyClients(ir.getID());
-					images.add(0, is);
-					if (images.size() > 20) {
-						System.out.println("removing " + (images.size() - 1));
-						images.remove(images.size() - 1);
-					}
-				} catch (Throwable t) {
-					System.out.println(t);
-					t.printStackTrace();
-				}
 
-			try {
-				Thread.sleep(requestWait);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		try {
+			while (true) {
+					System.out.println("Gettimg Image from " + ir.toString());
+					Image image = null;
+					
+					try {
+						image = ir.getImage();
+					} catch (Throwable t) {
+						System.out.println(ir.toString());
+						System.out.println(t);
+						t.printStackTrace();
+						System.out.println("Setting FailImage");
+						image = new FailImage(ir.getID());
+					}
+					
+					try {
+						ImageStorage is = iss.getImageStorageInstance();
+						is.saveBytes(image);
+						notifyClients(ir.getID());
+						images.add(0, is);
+						if (images.size() > 20) {
+							System.out.println("removing " + (images.size() - 1));
+							images.remove(images.size() - 1);
+						}
+					} catch (Throwable t) {
+						System.out.println(t);
+						t.printStackTrace();
+					}
+	
+				try {
+					Thread.sleep(requestWait);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} 
 			}
+		} catch (Throwable t) {
+			System.out.println("Unexpected Exception exit from run thread");
+			t.printStackTrace();
 		}
+		System.out.println("Unexpected exit from run thread");
 	}
 	
 
