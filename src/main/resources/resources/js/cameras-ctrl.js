@@ -3,7 +3,7 @@ angular.module('fpwApp')
 	var originalCameraList;
 	$scope.cameralist = [];
 	
-	SocketService.callbacks.notifyUpdateCamera = function(cameraUpdated){
+	SocketService.callbacks.notifyUpdateCamera = function(cameraUpdated, recognitions){
 			var index = 0;
 			var x = 0;
 			for (x = 0;x < $scope.cameralist.length; x++){
@@ -12,7 +12,8 @@ angular.module('fpwApp')
 				}
 			}
 		
-			fadeUpdate(index);
+			console.log(recognitions);
+			fadeUpdate(index, recognitions);
 		};
 
 		
@@ -33,12 +34,18 @@ angular.module('fpwApp')
 	
 	
 	
-	var fadeUpdate = function(index) {
+	var fadeUpdate = function(index, recognitions) {
 
 		$scope.cameralist[index].style='trasition-out';
 		var timestamp = (new Date()).getTime();
 		$scope.cameralist[index].url = '/fpw/camera/' + originalCameraList[index].id +
 		'/image?' + timestamp;
+		var classifiers_string = "";
+		for (var key in recognitions){
+			classifiers_string = classifiers_string + key + " (" + recognitions[key].substring(0,5) + ") ,"
+		}
+		classifiers_string = classifiers_string.substring(0, classifiers_string.length - 1)
+		$scope.cameralist[index].classifiers = classifiers_string;
 
 			$timeout(function(){
 				$scope.cameralist[index].style='trasition-in';

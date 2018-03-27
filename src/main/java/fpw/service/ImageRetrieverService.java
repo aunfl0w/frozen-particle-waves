@@ -54,8 +54,17 @@ public class ImageRetrieverService {
 		d.close();
 
 		makeQueueRetrievers(timeoutMS);
+		waitForSeconds(15);
 		scheduleThreads();
 
+	}
+
+	void waitForSeconds(int seconds)  {
+		try {
+			Thread.sleep(seconds * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void scheduleThreads() {

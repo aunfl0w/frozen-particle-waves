@@ -31,4 +31,9 @@ public class MemoryStorage implements ImageStorage {
 		return data.getContentType();
 	}
 
+	@Override
+	public String getFileName() {
+		return null;
+	}
+
 }

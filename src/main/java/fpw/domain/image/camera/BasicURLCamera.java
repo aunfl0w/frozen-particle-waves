@@ -18,7 +18,7 @@ public class BasicURLCamera implements ImageRetriever {
 	String contentType;
 	String id;
 	String description;
-	
+	boolean extraprocessing=false;
 
 
 	@Override
@@ -106,5 +106,14 @@ public class BasicURLCamera implements ImageRetriever {
 	public String toString() {
 		return "BasicURLCamera [url=" + url + ", contentType=" + contentType + ", id=" + id + ", description="
 				+ description + "]";
+	}
+
+
+	public boolean isExtraprocessing() {
+		return extraprocessing;
+	}
+
+	public void setExtraprocessing(boolean extraprocessing) {
+		this.extraprocessing = extraprocessing;
 	}
 }

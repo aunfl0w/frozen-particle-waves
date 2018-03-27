@@ -15,7 +15,7 @@ angular.module('fpwApp').factory('SocketService', function($q, $rootScope) {
 				var cameraUpdated = messageData.updateCamera;
 				console.log("Update from " + cameraUpdated);
 				
-				Service.callbacks.notifyUpdateCamera(cameraUpdated);
+				Service.callbacks.notifyUpdateCamera(cameraUpdated, messageData.recognitions);
 			}
 
 		});

@@ -17,3 +17,6 @@ CAMERA_CONFIG=/home/dad/Cameras.xml
 
 #image update frequency in MS
 IMAGE_UPDATE_MS=25000
+
+#image rec format string %s is file name
+export IMAGE_REC_CMD="/usr/bin/python3 /home/dad/bin/imagerec.py --image %s"

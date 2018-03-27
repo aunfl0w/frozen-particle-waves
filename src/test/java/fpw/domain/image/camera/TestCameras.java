@@ -11,6 +11,7 @@ public class TestCameras {
 		String expected = "Basic dXNlcm5hbWU6cGFzc3dvcmQ=";
 		
 		BasicAuthURLCamera baurlc = new BasicAuthURLCamera();
+		baurlc.setExtraprocessing(true);
 		baurlc.setUsername("username");
 		baurlc.setPassword("password");
 		baurlc.setDescription("test");

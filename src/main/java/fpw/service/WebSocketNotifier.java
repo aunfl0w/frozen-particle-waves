@@ -1,5 +1,7 @@
 package fpw.service;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -17,8 +19,9 @@ public class WebSocketNotifier {
 	}
 
 	@SendTo("/queue/comms")
-	public void announceUpdate(String value) {
+	public void announceUpdate(String value, HashMap<String, String> map) {
 		ClientCommunication cc = new ClientCommunication();
+		cc.setRecognitions(map);
 		cc.setUpdateCamera(value);
 		template.convertAndSend("/queue/comms", cc);
 	}

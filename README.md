@@ -1,6 +1,6 @@
 # frozen-particle-waves
 See the file LICENSE for license.
-Frozen particle waves is a security and aggregation front and end for IoT devices such as cameras.  
+Frozen particle waves is a security and aggregation front and end for IoT devices such as cameras and AI Image processing.  
 
 
 ## Goals

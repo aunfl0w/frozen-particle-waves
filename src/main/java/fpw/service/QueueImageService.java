@@ -1,8 +1,14 @@
 package fpw.service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import fpw.domain.image.FailImage;
 import fpw.domain.image.Image;
@@ -15,7 +21,7 @@ public class QueueImageService implements Runnable {
 	ImageStorageService iss; 
 	int requestWait = 15000;
 	List<ImageStorage> images = Collections.synchronizedList(new ArrayList<ImageStorage>());
-	
+	static Object ONE_PROCESS_LOCK = new Object();
 	
 	
 	public QueueImageService(){}
@@ -32,7 +38,7 @@ public class QueueImageService implements Runnable {
 			while (true) {
 					System.out.println("Gettimg Image from " + ir.toString());
 					Image image = null;
-					
+					boolean extraProcessing = ir.isExtraprocessing();
 					try {
 						image = ir.getImage();
 					} catch (Throwable t) {
@@ -46,7 +52,7 @@ public class QueueImageService implements Runnable {
 					try {
 						ImageStorage is = iss.getImageStorageInstance();
 						is.saveBytes(image);
-						notifyClients(ir.getID());
+						notifyClients(ir.getID(), is.getFileName(), extraProcessing);
 						images.add(0, is);
 						if (images.size() > 20) {
 							System.out.println("removing " + (images.size() - 1));
@@ -72,11 +78,55 @@ public class QueueImageService implements Runnable {
 	
 
 
-	private void notifyClients(String id) {
+	private void notifyClients(String id, String path, boolean extraProcessing) {
+		HashMap<String, String > map = new HashMap<>();
 		if (wsn == null){
 			System.err.println("wsn is null. cannot notify about " + id);
-		}else{
-			wsn.announceUpdate(id);
+			return;
+		}
+		if (path != null && extraProcessing) {
+			labelImage(path, map);
+		} else {
+			map.put("disabled_labeling", "1.00000");
+		}
+		wsn.announceUpdate(id, map);
+		
+	}
+
+	void labelImage(String path, HashMap<String, String> map) {
+		try {
+			String cmd = System.getenv().get("IMAGE_REC_CMD");
+			Process p = null;
+			
+			synchronized (ONE_PROCESS_LOCK) {
+				p = Runtime.getRuntime().exec(String.format(cmd, path));
+			
+				BufferedReader brin = new BufferedReader(new InputStreamReader(p.getInputStream()));
+				BufferedReader brerr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
+				String line = brin.readLine();
+				
+				while(line != null) {
+					
+					System.out.println(line);
+					Pattern pattern = Pattern.compile("\"(.*)\",\"(.*)\"");
+					Matcher m = pattern.matcher(line);
+					m.find();
+					map.put(m.group(1), m.group(2));
+					line = brin.readLine();
+				}
+				
+
+				line = brerr.readLine();
+				while(line != null) {
+					
+					System.err.println(line);
+					line = brerr.readLine();
+				}
+				p.destroy();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

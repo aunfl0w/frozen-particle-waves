@@ -91,5 +91,10 @@ public class FileStorage implements ImageStorage {
 	public String getContentType() {
 		return mimeType;
 	}
+
+	@Override
+	public String getFileName() {
+		return path;
+	}
 	
 }
