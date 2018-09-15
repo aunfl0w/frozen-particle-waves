@@ -1,20 +1,21 @@
 package fpw.security;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -31,16 +32,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${authn.password.user:password}") 
 	String userPassword; 
 	
-	@Autowired
-	public void configureAppLogins(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
-		.withUser("admin")
-		.password(adminPassword)
-		.roles("ADMIN", "USER")
-		.and()
-		.withUser("user")
-		.password(userPassword)
-		.roles("USER");
+	@Override
+	@Bean
+	protected UserDetailsService userDetailsService() {
+		UserDetails user = User.withDefaultPasswordEncoder()
+				.username("User")
+				.password(userPassword)
+				.roles("USER")
+				.build();
+		UserDetails admin = User.withDefaultPasswordEncoder()
+				.username("Admin")
+				.password(adminPassword)
+				.roles("USER", "ADMIN")
+				.build();
+		ArrayList<UserDetails> users = new ArrayList<UserDetails>();
+		users.add(user);
+		users.add(admin);
+		
+		return new InMemoryUserDetailsManager(users);
 	}
 
 	@Override
@@ -56,5 +65,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.failureHandler(authenticationFailureHandler);
 		
 	}
+
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+	
+	
 	
 }

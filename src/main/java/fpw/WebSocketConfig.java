@@ -11,7 +11,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer  {
 
-	@Value("${server.allowed.ws.domains}") 
+	@Value("${fpw.ws.domains}") 
 	String allowedOrigins; 
 
 	
