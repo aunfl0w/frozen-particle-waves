@@ -1,5 +1,7 @@
 package fpw.security;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -58,14 +60,15 @@ public class JsonLoginResource {
 	}
 	
 	@RequestMapping(value="/logout.json", method = RequestMethod.GET)
-	public void jsonLogoutAttempt(HttpServletRequest request, HttpServletResponse response) {
+	public void jsonLogoutAttempt(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		new SecurityContextLogoutHandler().logout(request, response, auth);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
-        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+		response.sendRedirect("");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 
 }
