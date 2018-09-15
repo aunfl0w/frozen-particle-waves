@@ -5,12 +5,12 @@ cd "$(dirname ${BASH_SOURCE[0]})"
 . ./settings
 
 
-wget -q -O - http://localhost:8081/metrics |jq
-wget -q -S -X POST -O - http://localhost:8081/shutdown
-sleep 5
+wget -q -O - http://localhost:8081/fpw/metrics |jq
+wget -q -S -X POST -O - http://localhost:8081/fpw/shutdown
+sleep 15
 ps aux  |grep "[f]rozen-particle" |while read uid processid rest
 do
-echo stopping $rest
+echo stopping $processid $rest
 kill -9 $processid
 done
 
