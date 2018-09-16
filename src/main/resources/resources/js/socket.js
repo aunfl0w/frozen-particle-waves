@@ -13,9 +13,9 @@ angular.module('fpwApp').factory('SocketService', function($q, $rootScope) {
 			var messageData = JSON.parse(comms.body);
 			if (messageData.messageType === "1"){
 				var cameraUpdated = messageData.updateCamera;
-				console.log("Update from " + cameraUpdated);
-				
-				Service.callbacks.notifyUpdateCamera(cameraUpdated);
+				var imageID = messageData.imageID;
+				console.log("Update from " + cameraUpdated + " : " + imageID );
+				Service.callbacks.notifyUpdateCamera(cameraUpdated, imageID);
 			}
 
 		});

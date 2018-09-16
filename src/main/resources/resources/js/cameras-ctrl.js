@@ -3,7 +3,7 @@ angular.module('fpwApp')
 	var originalCameraList;
 	$scope.cameralist = [];
 	
-	SocketService.callbacks.notifyUpdateCamera = function(cameraUpdated){
+	SocketService.callbacks.notifyUpdateCamera = function(cameraUpdated, imageID){
 			var index = 0;
 			var x = 0;
 			for (x = 0;x < $scope.cameralist.length; x++){
@@ -12,7 +12,7 @@ angular.module('fpwApp')
 				}
 			}
 		
-			fadeUpdate(index);
+			fadeUpdate(index, imageID);
 		};
 
 		
@@ -24,8 +24,7 @@ angular.module('fpwApp')
 		for (count = 0; count < originalCameraList.length; count++) {
 			$scope.cameralist[count].url = '/fpw/camera/' + originalCameraList[count].id +
 			'/image?' + timestamp;
-			$scope.cameralist[count].style='trasition-out';
-			fadeUpdate(count);
+			$scope.cameralist[count].style='trasition-in';
 		}
 	}, function(badResponse) {
 		$location.path('/login');
@@ -33,15 +32,14 @@ angular.module('fpwApp')
 	
 	
 	
-	var fadeUpdate = function(index) {
+	var fadeUpdate = function(index, imageID) {
 		if (document.hidden){
 			return ;
 		}
 		
 		$scope.cameralist[index].style='trasition-out';
 		var timestamp = (new Date()).getTime();
-		$scope.cameralist[index].url = '/fpw/camera/' + originalCameraList[index].id +
-		'/image?' + timestamp;
+		$scope.cameralist[index].url = '/fpw/camera/' + originalCameraList[index].id + '/image/' + imageID;
 
 			$timeout(function(){
 				$scope.cameralist[index].style='trasition-in';
@@ -57,11 +55,13 @@ angular.module('fpwApp')
 .controller('cameraCtrl', function($scope, $http, $location, $timeout, $routeParams){
 	$scope.cameraId = $routeParams.cameraId;
 	$scope.imagelist = [];
-	//assume there will be 20 images
-	var step;
-	for (step = 0; step < 20; step++){
-		$scope.imagelist.push('/fpw/camera/'+$routeParams.cameraId+'/image/'+step);
-	}
-					
 	
+	$http.get('/fpw/camera/' + $routeParams.cameraId + '/idlist').then(function(goodResponse) {
+		var idlist = goodResponse.data;
+		for (var key in idlist){
+			$scope.imagelist.push('camera/' + $routeParams.cameraId + '/image/' + idlist[key])
+		}
+	}, function(badResponse) {
+		$location.path('/login');
+	});
 });

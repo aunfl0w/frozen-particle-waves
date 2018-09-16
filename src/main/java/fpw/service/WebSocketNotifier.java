@@ -17,9 +17,10 @@ public class WebSocketNotifier {
 	}
 
 	@SendTo("/queue/comms")
-	public void announceUpdate(String value) {
+	public void announceUpdate(String cameraID, Long imageID) {
 		ClientCommunication cc = new ClientCommunication();
-		cc.setUpdateCamera(value);
+		cc.setUpdateCamera(cameraID);
+		cc.setImageID(imageID);
 		template.convertAndSend("/queue/comms", cc);
 	}
 	

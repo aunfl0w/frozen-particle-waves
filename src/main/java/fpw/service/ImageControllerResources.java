@@ -16,6 +16,8 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +30,11 @@ import fpw.service.storage.ImageStorage;
 
 @RestController
 public class ImageControllerResources {
-
+	private static final Logger log = LoggerFactory.getLogger(ImageControllerResources.class);
+	
+	@Autowired
+	ImageStorageService iss;
+	
 	@Autowired
 	ImageRetrieverService imageRS;
 	
@@ -37,7 +43,7 @@ public class ImageControllerResources {
 	
 	@RequestMapping("/camera/status")
 	public String getStatus(Principal p) throws Exception{
-		System.out.println("Principal is " + p.getName());
+		log.info("Principal is " + p.getName());
 		return (new Date()).toString();
 	}
 
@@ -45,19 +51,26 @@ public class ImageControllerResources {
 	public Collection<ImageRetriever> getInfo() throws IOException {
 		return imageRS.getImageRetrievers().values();
 	}
+
+	@RequestMapping("/camera/{cameraID}/idlist")
+	public Collection<Long> getidList(@PathVariable String cameraID) throws IOException {
+		return iss.getImageIdList(cameraID);
+	}
+
 	
 	@RequestMapping(path = "/camera/{cameraID}/image", method = RequestMethod.GET)
 	@ResponseBody
 	public void getImage(@PathVariable String cameraID, HttpServletResponse response) throws Throwable {
-		ImageStorage img = imageRS.getFirstImage(cameraID);
+		ImageStorage img = iss.getLatestImage(cameraID);
 		writeImage(response, img);
 		
 	}
 	
 	@RequestMapping(path = "/camera/{cameraID}/image/{imageID}", method = RequestMethod.GET)
 	@ResponseBody
-	public void getImage(@PathVariable String cameraID, @PathVariable int imageID, HttpServletResponse response) throws Throwable {
-		ImageStorage img = imageRS.getImageAt(cameraID, imageID);
+	public void getImage(@PathVariable String cameraID, @PathVariable Long imageID, HttpServletResponse response) throws Throwable {
+		response.setHeader("cache-control", "private, max-age=7200");
+		ImageStorage img = iss.getImage(cameraID, imageID);
 		writeImage(response, img);
 	}
 	
@@ -83,7 +96,7 @@ public class ImageControllerResources {
 		if (buffImage.getWidth() < 600)
 			scaleby = 1.0f; qualityby = 0.25f;
 
-		System.out.println(String.format("Image is %d by %d scale to %f quality to %f",buffImage.getWidth(), buffImage.getHeight(), scaleby, qualityby));
+		log.info(String.format("Image is %d by %d scale to %f quality to %f",buffImage.getWidth(), buffImage.getHeight(), scaleby, qualityby));
 			
 		//scale image
 		Image scaledImage = buffImage.getScaledInstance((int)(buffImage.getWidth() / scaleby), 
