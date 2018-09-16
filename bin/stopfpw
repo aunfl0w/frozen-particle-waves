@@ -4,8 +4,6 @@ cd "$(dirname ${BASH_SOURCE[0]})"
 
 . ./settings
 
-
-wget -q -O - http://localhost:8081/actuator/metrics |jq 2>/dev/null
 curl -XPOST http://localhost:8081/actuator/shutdown
 
 sleep 15
