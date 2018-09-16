@@ -1,5 +1,5 @@
 angular.module('fpwApp')
-.controller('camerasCtrl', function($scope, $http, $location, $timeout, SocketService){
+.controller('camerasCtrl', function($scope, $http, $location, $timeout, SocketService ){
 	var originalCameraList;
 	$scope.cameralist = [];
 	
@@ -34,7 +34,10 @@ angular.module('fpwApp')
 	
 	
 	var fadeUpdate = function(index) {
-
+		if (document.hidden){
+			return ;
+		}
+		
 		$scope.cameralist[index].style='trasition-out';
 		var timestamp = (new Date()).getTime();
 		$scope.cameralist[index].url = '/fpw/camera/' + originalCameraList[index].id +

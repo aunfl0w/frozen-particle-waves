@@ -42,11 +42,19 @@
 </div>
 
 <script>
-document.addEventListener('visibilitychange', function(e) {
-	if (!document.hidden) {
-		window.location.reload();
-	}
-});
+
+	var hiddentime = 0
+	document.addEventListener('visibilitychange', function(e) {
+
+		if (!document.hidden) {
+			var now = new Date()
+			if (now - hiddentime > 15 * 60 * 1000) {
+				window.location.reload()
+			}
+		} else {
+			hiddentime = new Date()
+		}
+	});
 </script>
 
 </body>
