@@ -5,8 +5,9 @@ cd "$(dirname ${BASH_SOURCE[0]})"
 . ./settings
 
 
-wget -q -O - http://localhost:8081/actuator/metrics |jq
-wget -q -S -X POST -O - http://localhost:8081/actuator/shutdown
+wget -q -O - http://localhost:8081/actuator/metrics |jq 2>/dev/null
+curl -XPOST http://localhost:8081/actuator/shutdown
+
 sleep 15
 ps aux  |grep "[f]rozen-particle" |while read uid processid rest
 do
