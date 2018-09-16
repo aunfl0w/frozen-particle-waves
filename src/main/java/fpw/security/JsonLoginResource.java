@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * login and logout with json requests
- * post in json body to login.json { "userName" : "admin" , "password" : "password" }
+ * login and logout with json requests post in json body to login.json {
+ * "userName" : "admin" , "password" : "password" }
  * 
  * @author aunfl0w
  *
@@ -32,43 +32,44 @@ public class JsonLoginResource {
 	@Autowired
 	AuthenticationManager authenticationManager;
 
+	@RequestMapping(value = "/login.json", method = RequestMethod.POST)
+	public void jsonLoginAttempt(@RequestBody LoginRequest loginRequest, HttpServletRequest request,
+			HttpServletResponse response) {
 
-	@RequestMapping(value="/login.json", method = RequestMethod.POST)
-	public void jsonLoginAttempt(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+					loginRequest.getUserName(), loginRequest.getPassword());
+			token.setDetails(new WebAuthenticationDetails(request));
 
-	    try {
-	        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword());
-	        token.setDetails(new WebAuthenticationDetails(request));
+			Authentication auth = authenticationManager.authenticate(token);
+			SecurityContext securityContext = SecurityContextHolder.getContext();
+			securityContext.setAuthentication(auth);
 
-	        Authentication auth = authenticationManager.authenticate(token);
-	        SecurityContext securityContext = SecurityContextHolder.getContext();
-	        securityContext.setAuthentication(auth);
-
-	        if(auth.isAuthenticated()){
-	        	// how to do without session?
-	            HttpSession session = request.getSession(true);
-	            session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-	            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-	        }else{
-	            SecurityContextHolder.getContext().setAuthentication(null);
-	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	        }   
-	    } catch (Exception e) {
-	    	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	    }
+			if (auth.isAuthenticated()) {
+				// how to do without session?
+				HttpSession session = request.getSession(true);
+				session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			} else {
+				SecurityContextHolder.getContext().setAuthentication(null);
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		}
 
 	}
-	
-	@RequestMapping(value="/logout.json", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/logout.json", method = RequestMethod.GET)
 	public void jsonLogoutAttempt(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		new SecurityContextLogoutHandler().logout(request, response, auth);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			new SecurityContextLogoutHandler().logout(request, response, auth);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 		response.sendRedirect("");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 
 }
