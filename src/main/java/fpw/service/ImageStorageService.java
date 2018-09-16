@@ -29,7 +29,7 @@ public class ImageStorageService {
 	@Value("${camera.config.storage.file.path}")
 	String storagePath;
 
-	@Value("${camera.config.storage.max:100}")
+	@Value("${camera.config.storage.max:500}")
 	int storageMax;
 
 	ConcurrentHashMap<String, ConcurrentNavigableMap<Long, ImageStorage>> images = new ConcurrentHashMap<String, ConcurrentNavigableMap<Long, ImageStorage>>();
@@ -44,7 +44,7 @@ public class ImageStorageService {
 	}
 
 	public List<Long> getImageIdList(String cameraID) {
-		return getImageIdList(cameraID, Integer.MAX_VALUE);
+		return getImageIdList(cameraID, 50);
 	}
 
 	public List<Long> getImageIdList(String cameraID, int limit) {
