@@ -65,3 +65,8 @@ angular.module('fpwApp')
 		$location.path('/login');
 	});
 });
+
+angular.module('fpwApp')
+.controller('videoCtrl', function($scope, $http, $location, $timeout, $routeParams){
+	$scope.videocam = 'camera/' + $routeParams.cameraId + '/video';
+});

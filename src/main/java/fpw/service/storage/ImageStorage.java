@@ -11,4 +11,5 @@ public interface ImageStorage {
 	public InputStream getInputStream() throws FileNotFoundException; 
 	public String getContentType();
 	public int getLength();
+	public default String getFilePath() { return "";}
 }

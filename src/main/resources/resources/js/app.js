@@ -11,6 +11,10 @@ angular.module('fpwApp', ['ngRoute', 'ngAnimate'])
 			controller  : 'cameraCtrl'
 			
 		})
+		.when('/camera/:cameraId/video', {
+			templateUrl : 'template/video.html',
+			controller  : 'videoCtrl'
+		})
 		.when('/login', {
 			templateUrl : 'template/login.html',
 			controller  : 'loginCtrl'

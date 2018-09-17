@@ -1,6 +1,7 @@
 package fpw.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,16 @@ public class ImageStorageService {
 
 	public List<Long> getImageIdList(String cameraID) {
 		return getImageIdList(cameraID, 50);
+	}
+	
+	public List<String> getImagePathList(String cameraID){
+		Collection<ImageStorage> imageList = getImageMap(cameraID).values();
+		List<String> filePaths = new ArrayList<String>();
+		for (ImageStorage imageStorage : imageList) {
+			filePaths.add(imageStorage.getFilePath());
+		}
+		
+		return filePaths;
 	}
 
 	public List<Long> getImageIdList(String cameraID, int limit) {
