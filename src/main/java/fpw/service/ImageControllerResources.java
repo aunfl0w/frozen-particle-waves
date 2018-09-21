@@ -109,7 +109,7 @@ public class ImageControllerResources {
 		}
 		
 		
-		String cmd = "mencoder mf://@" + tmpFileName + " -idx -nosound -noskip -of lavf -lavfopts format=mp4 -ovc x264 -x264encopts bitrate=2500:bframes=0:crf=20 -mf fps=6 -vf scale=640 -o " + tmpFileName + ".mp4";
+		String cmd = "mencoder mf://@" + tmpFileName + " -idx -nosound -noskip -of lavf -lavfopts format=mp4 -ovc x264 -x264encopts bitrate=2500:nocabac:bframes=0:level_idc=12:crf=20 -mf fps=6 -vf scale=640 -o " + tmpFileName + ".mp4";
 		log.info(cmd);
 		String[] cmdArr = cmd.split(" ");
 		Process p = Runtime.getRuntime().exec(cmdArr);
