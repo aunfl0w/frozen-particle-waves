@@ -69,4 +69,5 @@ angular.module('fpwApp')
 angular.module('fpwApp')
 .controller('videoCtrl', function($scope, $http, $location, $timeout, $routeParams){
 	$scope.videocam = 'camera/' + $routeParams.cameraId + '/video';
+	window.scrollTo(0, 0);
 });
