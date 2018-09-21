@@ -129,8 +129,8 @@ public class ImageControllerResources {
 			
 		os.flush();
 		fis.close();
-//		tmpFile.delete();
-//		tmpVideoFile.delete();
+		tmpFile.delete();
+		tmpVideoFile.delete();
 	}
 
 
