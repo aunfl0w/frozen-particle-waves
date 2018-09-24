@@ -3,20 +3,14 @@ package fpw.service;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -26,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,8 +33,10 @@ import fpw.service.storage.ImageStorage;
 public class ImageControllerResources {
 	private static final Logger log = LoggerFactory.getLogger(ImageControllerResources.class);
 	
-	@Value("${camera.config.storage.file.path}")
-	String storagePath;
+
+	
+	@Autowired
+	VideoProducerService videoProducerService;
 
 	@Autowired
 	ImageStorageService iss;
@@ -88,51 +83,10 @@ public class ImageControllerResources {
 	@ResponseBody
 	public void getidVideo(@PathVariable String cameraID, HttpServletResponse response) throws IOException, InterruptedException {
 		List<String> pathList = iss.getImagePathList(cameraID);
-		log.info("Making video for " + cameraID + ", image count is " + pathList.size() );
-		sendVideo(response, pathList);
+		videoProducerService.sendVideo(response, pathList, cameraID);
 	}
 
-	void sendVideo(HttpServletResponse response, List<String> pathList)
-			throws FileNotFoundException, IOException, InterruptedException {
-		String tmpFileName = storagePath + File.separatorChar + UUID.randomUUID().toString();
-		File tmpFile = new File(tmpFileName);
-		BufferedWriter bw = null;
-		try {
-			FileOutputStream fos = new FileOutputStream(tmpFile);
-			bw = new BufferedWriter(new OutputStreamWriter(fos));
-			for (String string : pathList) {
-				bw.write(string);
-				bw.newLine();
-			}
-		} finally {
-			bw.close();
-		}
-		
-		
-		String cmd = "mencoder mf://@" + tmpFileName + " -idx -nosound -noskip -of lavf -lavfopts format=mp4 -ovc x264 -x264encopts bitrate=2500:nocabac:bframes=0:level_idc=12:crf=20 -mf fps=6 -vf scale=640 -o " + tmpFileName + ".mp4";
-		log.info(cmd);
-		String[] cmdArr = cmd.split(" ");
-		Process p = Runtime.getRuntime().exec(cmdArr);
-		p.waitFor();
-		
-		
-		response.setContentType("video/mp4");
-		OutputStream os = response.getOutputStream();
-		File tmpVideoFile = new File(tmpFileName + ".mp4");
-		FileInputStream fis = new FileInputStream(tmpVideoFile);
-		byte[] buff = new byte[4096];
-		int size = 0;
-		do {
-			os.write(buff, 0, size);
-			size = fis.read(buff);
-		} while (size > 0 );
-			
-		os.flush();
-		fis.close();
-		tmpFile.delete();
-		tmpVideoFile.delete();
-	}
-
+	
 
 	void writeImage(HttpServletResponse response, ImageStorage img) throws IOException, FileNotFoundException {
 
