@@ -28,7 +28,7 @@ public class QueueImageService implements Runnable {
 
 		try {
 			while (true) {
-				log.info("Gettimg Image from " + ir.toString());
+				log.info("Getting Image from " + ir.toString());
 				Image image = null;
 
 				try {
