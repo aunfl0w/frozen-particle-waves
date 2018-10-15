@@ -10,10 +10,16 @@ fi
 . ./settings
 
 TIMESTAMP=$(date +%F:%N)
-if [ ! -d $DATA_PATH ] 
+if [[ ! -d $DATA_PATH ]] 
 then
 /bin/mkdir $DATA_PATH
 fi
+
+if [[ ! -d $DATA_PATH/logs ]] 
+then
+/bin/mkdir $DATA_PATH/logs
+fi
+date > $DATA_PATH/logs/SystemOut$TIMESTAMP.log
 
 /usr/bin/java \
 -jar frozen-particle-waves-0.0.1-SNAPSHOT.jar $REMOTE_DEBUG \
@@ -33,6 +39,6 @@ fi
 -XX:ConcGCThreads=1 \
 -XX:InitiatingHeapOccupancyPercent=70 \
 -Dsun.net.client.defaultReadTimeout=60000 \
--d32 > $DATA_PATH/SystemOut$TIMESTAMP.log 2>&1 &
+-d32 >> $DATA_PATH/logs/SystemOut$TIMESTAMP.log 2>&1 &
 
 echo Starting ......
