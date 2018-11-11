@@ -2,7 +2,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-
 	<groupId>frozen-particle-waves</groupId>
 	<artifactId>frozen-particle-waves</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -15,10 +14,14 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<docker.image.prefix>fpw</docker.image.prefix>
+		<docker.image.name>frozen-particle-waves</docker.image.name>
 	</properties>
+
 
 	<!-- Add typical dependencies for a web application -->
 	<dependencies>
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -84,25 +87,63 @@
 			<artifactId>java-support</artifactId>
 			<version>7.1.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>docker-maven-plugin</artifactId>
+			<version>0.27.2</version>
+			<type>maven-plugin</type>
+		</dependency>
+		
 	</dependencies>
 
 	<!-- Package as an executable jar -->
 	<build>
 		<plugins>
+		
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.27.2</version>
+				
+				<configuration>
+					<dockerHost>unix://var/run/docker.sock</dockerHost>
+					<verbose>true</verbose>
+					<images>
+						<image>
+							<name>${docker.image.prefix}/${docker.image.name}</name>
+							<build>
+								<dockerFileDir>${project.basedir}</dockerFileDir>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+			
 		</plugins>
 	</build>
 
@@ -122,6 +163,7 @@
 			<url>http://repo.spring.io/milestone</url>
 		</repository>
 	</repositories>
+	
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-snapshots</id>
@@ -132,4 +174,5 @@
 			<url>http://repo.spring.io/milestone</url>
 		</pluginRepository>
 	</pluginRepositories>
+	
 </project>
