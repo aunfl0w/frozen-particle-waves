@@ -1,0 +1,12 @@
+#!/bin/bash 
+
+
+curl -XPOST http://localhost:8081/actuator/shutdown
+
+sleep 15
+ps aux  |grep "[f]rozen-particle" |while read uid processid rest
+do
+echo stopping $processid $rest
+kill -9 $processid
+done
+

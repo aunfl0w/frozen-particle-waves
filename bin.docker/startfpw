@@ -1,0 +1,60 @@
+#!/bin/bash 
+
+cat <<EOM
+The following settings must be based in docker ENV
+or defaulted
+#Place to store images and logs
+DATA_PATH:/home/fpw/fpwdata
+
+#Admin password
+ADMIN_PASS=password$HOSTNAME$RANDOM
+
+#Standard user name
+STANDARD_PASS=password$HOSTNAME$RANDOM
+
+#image update frequency in MS
+IMAGE_UPDATE_MS=25000
+
+#Camera Config file path
+#Example       /home/mylogin/Cameras.xml
+CAMERA_CONFIG=/home/fpw/Cameras.xml
+
+EOM
+
+data_path=${DATA_PATH:=/home/fpw/fpwdata}
+admin_pass=${ADMIN_PASS:="password$HOSTNAME$RANDOM"}
+standard_pass=${STANDARD_PASS:="password$HOSTNAME$RANDOM"}
+camera_config=${CAMERA_CONFIG:=/home/fpw/Cameras.xml}
+image_update_ms=${IMAGE_UPDATE_MS:=25000}
+
+
+
+timestamp=$(date +%F:%N)
+if [[ ! -d $data_path ]] 
+then
+/bin/mkdir $data_path
+fi
+
+
+echo Starting ......
+
+/usr/bin/java \
+-jar /home/fpw/bin/frozen-particle-waves-0.0.1-SNAPSHOT.jar \
+--authn.password.admin=$admin_pass \
+--authn.password.user=$standard_pass \
+--endpoints.shutdown.sensitive=false \
+--endpoints.shutdown.enabled=true \
+--camera.config.file=$camera_config \
+--camera.config.storage.file.path=$data_path \
+--camera.config.requestWait=$image_update_ms \
+-Djava.security.egd=file:/dev/./urandom \
+-server \
+-Xmx500m \
+-XX:+UseG1GC \
+-XX:MaxGCPauseMillis=200 \
+-XX:ParallelGCThreads=1 \
+-XX:ConcGCThreads=1 \
+-XX:InitiatingHeapOccupancyPercent=70 \
+-Dsun.net.client.defaultReadTimeout=60000 \
+-d32 
+
