@@ -48,21 +48,13 @@ public class FileStorage implements ImageStorage {
 
 
 		
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(path);
+		try (
+			FileOutputStream fos = new FileOutputStream(path);
+		) {
 			fos.write(image.getData());
-			fos.flush();
-			fos.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} finally {
-			try {
-				fos.flush();
-				fos.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 			image.setData(null);
 		}
 	}

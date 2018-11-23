@@ -13,13 +13,10 @@ import fpw.domain.image.ImageRetriever;
 
 public class BasicURLCamera implements ImageRetriever {
 
-
 	String url;
 	String contentType;
 	String id;
 	String description;
-	
-
 
 	@Override
 	public Image getImage() throws IOException {
@@ -27,25 +24,20 @@ public class BasicURLCamera implements ImageRetriever {
 		Image image = new Image(id, contentType);
 		byte data[] = null;
 
-		InputStream is = null;
-		ByteArrayOutputStream bos = null;
+		try (
+				ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
+				InputStream is = getInputStream(u)
+		) {
 
-		try {
-			is = getInputStream(u);
-			
-			bos = new ByteArrayOutputStream();
 			byte buff[] = new byte[1024];
 			int result = -1;
 			do {
-				result = is.read(buff); //need timeout
+				result = is.read(buff); // need timeout
 				bos.write(buff, 0, result > 0 ? result : 0);
 			} while (result > 0);
 			data = bos.toByteArray();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			bos.close();
-			is.close();
 		}
 
 		image.setData(data);
@@ -66,11 +58,10 @@ public class BasicURLCamera implements ImageRetriever {
 		return is;
 	}
 
-	@JsonIgnore 
+	@JsonIgnore
 	public String getUrl() {
 		return url;
 	}
-
 
 	public void setUrl(String url) {
 		this.url = url;
@@ -97,11 +88,11 @@ public class BasicURLCamera implements ImageRetriever {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "BasicURLCamera [url=" + url + ", contentType=" + contentType + ", id=" + id + ", description="

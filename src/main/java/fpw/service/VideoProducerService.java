@@ -119,17 +119,16 @@ public class VideoProducerService {
 
 		String tmpFileName = storagePath + File.separatorChar + UUID.randomUUID().toString();
 		File tmpFile = new File(tmpFileName);
-		BufferedWriter bw = null;
-		try {
+		try (   
 			FileOutputStream fos = new FileOutputStream(tmpFile);
-			bw = new BufferedWriter(new OutputStreamWriter(fos));
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+		) {
+			
 			for (String string : pathList) {
 				bw.write(string);
 				bw.newLine();
 			}
-		} finally {
-			bw.close();
-		}
+		} 
 
 		String cmd = "mencoder mf://@" + tmpFileName
 				+ " -idx -nosound -noskip -of lavf -lavfopts format=mp4 -ovc x264 -x264encopts bitrate=2500:nocabac:bframes=0:level_idc=12:crf=20 -mf fps=6 -vf scale=640 -o "
