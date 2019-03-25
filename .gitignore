@@ -16,10 +16,10 @@ RemoteSystemsTempFiles/
 /.metadata/
 target/
 /.apt_generated/
-/.settings/
-/.classpath
-/.factorypath
-/.project
+server/.settings/
+server/.classpath
+server/.factorypath
+server/.project
 
 #spring stuff
 .springBeans
@@ -28,3 +28,4 @@ target/
 deploy
 
 divx2pass*
+

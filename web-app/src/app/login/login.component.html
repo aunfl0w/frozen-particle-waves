@@ -1,0 +1,31 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <form #f="ngForm" name="loginForm" (ngSubmit)="login()">
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input required matInput placeholder="" [(ngModel)]="loginModel.userName" name="userName">
+        <mat-icon matSuffix>security</mat-icon>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input required matInput placeholder="" [(ngModel)]="loginModel.password" name="password">
+        <mat-icon matSuffix>security</mat-icon>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-checkbox [(ngModel)]="loginModel.rememberMe" name="rememberMe">Remember Me</mat-checkbox>
+    </p>
+    <p>
+      <button class="loginbutton" mat-raised-button [disabled]="f.invalid" type="submit">Login</button>
+
+    </p>
+  </form>
+  <p></p>
+  <mat-card class="statuscard">
+    <mat-card-content>
+      Status: {{status}}
+    </mat-card-content>
+  </mat-card>
+</div>
