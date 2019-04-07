@@ -17,7 +17,8 @@ const routes: Routes = [
     path: '', component: FpwAppComponent,
     children: [
       { path: '', component: MainContentComponent },
-      { path: 'image-list/:id', component: ImageListComponent }
+      { path: 'all', component: MainContentComponent },
+      { path: 'image-list/:id', component: ImageListComponent,  }
     ]
   }
 ];

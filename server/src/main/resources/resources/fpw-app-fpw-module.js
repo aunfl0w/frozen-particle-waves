@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n  <mat-card-title>{{description}}</mat-card-title>\n  <img mat-card-image [src]=\"getCameraURL()\">\n  <mat-card-actions>\n    <button mat-raised-button type=\"submit\">Recent</button>\n  </mat-card-actions>\n</mat-card>"
+module.exports = "<mat-card>\n  <mat-card-title>{{description}} [TODO upated time]</mat-card-title>\n  <img mat-card-image [src]=\"getCameraURL()\">\n</mat-card>"
 
 /***/ }),
 
@@ -42,7 +42,12 @@ var CameraComponent = /** @class */ (function () {
     CameraComponent.prototype.ngOnInit = function () {
     };
     CameraComponent.prototype.getCameraURL = function () {
-        return 'api/camera/' + this.cameraId + '/image';
+        if (this.cameraId) {
+            return 'api/camera/' + this.cameraId + '/image';
+        }
+        else {
+            return this.cameraURL;
+        }
     };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
@@ -52,6 +57,10 @@ var CameraComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", String)
     ], CameraComponent.prototype, "cameraId", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", String)
+    ], CameraComponent.prototype, "cameraURL", void 0);
     CameraComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-camera',
@@ -74,7 +83,7 @@ var CameraComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  image-list works!\n</p>\n"
+module.exports = "Camera selected is {{cameraId}}\n<div *ngFor=\"let cameraURL of urls\">\n  <app-camera [cameraURL]=\"cameraURL\"></app-camera>\n</div>"
 
 /***/ }),
 
@@ -101,20 +110,44 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImageListComponent", function() { return ImageListComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_shared_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/shared/api.service */ "./src/app/shared/api.service.ts");
+
+
 
 
 var ImageListComponent = /** @class */ (function () {
-    function ImageListComponent() {
+    function ImageListComponent(activeRoute, apiService) {
+        var _this = this;
+        this.activeRoute = activeRoute;
+        this.apiService = apiService;
+        this.dataupdater = function (data) {
+            console.log(data);
+            _this.urls.push(data);
+        };
+        this.urls = [];
+        console.log('ImageListComponent constructor');
     }
     ImageListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.cameraId = this.activeRoute.snapshot.params['id'];
+        this.activeRoute.params.subscribe(function (params) {
+            _this.urls = [];
+            _this.cameraId = params.id;
+            _this.apiService.cameraImageList(_this.cameraId).subscribe(_this.dataupdater);
+        });
     };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", String)
+    ], ImageListComponent.prototype, "cameraId", void 0);
     ImageListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-image-list',
             template: __webpack_require__(/*! ./image-list.component.html */ "./src/app/fpw-app/components/image-list/image-list.component.html"),
             styles: [__webpack_require__(/*! ./image-list.component.scss */ "./src/app/fpw-app/components/image-list/image-list.component.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], src_app_shared_api_service__WEBPACK_IMPORTED_MODULE_3__["ApiService"]])
     ], ImageListComponent);
     return ImageListComponent;
 }());
@@ -195,7 +228,7 @@ var MainContentComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-sidenav-container class=\"app-sidenav-container\">\n    <mat-sidenav #sidenav class=\"app-sidenav mat-elevation-z10\" [opened]=\"!isScreenSmall()\"\n        [mode]=\"isScreenSmall() ? 'over' : 'side'\">\n        <mat-toolbar color=\"primary\">\n            Menu\n        </mat-toolbar>\n\n        <mat-nav-list>\n            <mat-list-item [routerLink]=\"main\">\n                <mat-icon matSuffix>camera_enhance</mat-icon>\n                All Cameras\n            </mat-list-item>\n        </mat-nav-list>\n\n        <mat-nav-list *ngFor=\"let camera of camerainfo\">\n            <mat-list-item>\n                <mat-icon matSuffix>camera_enhance</mat-icon>\n                {{camera.description}}\n            </mat-list-item>\n        </mat-nav-list>\n\n    </mat-sidenav>\n\n    <div class=\"app-sidenav-content\">\n        <app-toolbar (toggleSidenav)=\"sidenav.toggle()\" >\n        </app-toolbar>\n        <div class=\"wrapper\">\n            <router-outlet></router-outlet>\n        </div>\n    </div>\n\n</mat-sidenav-container>"
+module.exports = "<mat-sidenav-container class=\"app-sidenav-container\">\n    <mat-sidenav #sidenav class=\"app-sidenav mat-elevation-z10\" [opened]=\"!isScreenSmall()\"\n        [mode]=\"isScreenSmall() ? 'over' : 'side'\">\n        <mat-toolbar color=\"primary\">\n            Menu\n        </mat-toolbar>\n\n        <mat-nav-list>\n            <mat-list-item (click)=\"clickAllCameras()\">\n                <mat-icon matSuffix>camera_enhance</mat-icon>\n                All Cameras\n            </mat-list-item>\n        </mat-nav-list>\n\n        <mat-nav-list *ngFor=\"let camera of camerainfo\">\n            <mat-list-item (click)=\"clickCamera(camera.id)\">\n                <mat-icon matSuffix>camera</mat-icon>\n                {{camera.description}}\n            </mat-list-item>\n        </mat-nav-list>\n\n    </mat-sidenav>\n\n    <div class=\"app-sidenav-content\">\n        <app-toolbar (toggleSidenav)=\"sidenav.toggle()\" >\n        </app-toolbar>\n        <div class=\"wrapper\">\n            <router-outlet></router-outlet>\n        </div>\n    </div>\n\n</mat-sidenav-container>"
 
 /***/ }),
 
@@ -224,15 +257,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var src_app_shared_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/shared/api.service */ "./src/app/shared/api.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
 
 
 
 
 var SMALL_WIDTH_BREAKPOINT = 720;
 var SidenavComponent = /** @class */ (function () {
-    function SidenavComponent(zone, apiService) {
+    function SidenavComponent(zone, apiService, router, activatedRoute) {
         this.zone = zone;
         this.apiService = apiService;
+        this.router = router;
+        this.activatedRoute = activatedRoute;
         this.mediaMatcher = matchMedia("(max-width: " + SMALL_WIDTH_BREAKPOINT + "px)");
     }
     SidenavComponent.prototype.ngOnInit = function () {
@@ -243,6 +280,14 @@ var SidenavComponent = /** @class */ (function () {
         }, function (err) {
             console.error("error getting camera list: " + err);
         });
+    };
+    SidenavComponent.prototype.clickAllCameras = function () {
+        this.router.navigate(['all'], { relativeTo: this.activatedRoute });
+    };
+    SidenavComponent.prototype.clickCamera = function (cameraId) {
+        console.log("clickCamera()");
+        console.log(cameraId);
+        this.router.navigate(['image-list', cameraId], { relativeTo: this.activatedRoute });
     };
     SidenavComponent.prototype.isScreenSmall = function () {
         return this.mediaMatcher.matches;
@@ -260,7 +305,10 @@ var SidenavComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./sidenav.component.html */ "./src/app/fpw-app/components/sidenav/sidenav.component.html"),
             styles: [__webpack_require__(/*! ./sidenav.component.scss */ "./src/app/fpw-app/components/sidenav/sidenav.component.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], src_app_shared_api_service__WEBPACK_IMPORTED_MODULE_3__["ApiService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"],
+            src_app_shared_api_service__WEBPACK_IMPORTED_MODULE_3__["ApiService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"]])
     ], SidenavComponent);
     return SidenavComponent;
 }());
@@ -405,7 +453,8 @@ var routes = [
         path: '', component: _fpw_app_component__WEBPACK_IMPORTED_MODULE_9__["FpwAppComponent"],
         children: [
             { path: '', component: _components_main_content_main_content_component__WEBPACK_IMPORTED_MODULE_8__["MainContentComponent"] },
-            { path: 'image-list/:id', component: _components_image_list_image_list_component__WEBPACK_IMPORTED_MODULE_11__["ImageListComponent"] }
+            { path: 'all', component: _components_main_content_main_content_component__WEBPACK_IMPORTED_MODULE_8__["MainContentComponent"] },
+            { path: 'image-list/:id', component: _components_image_list_image_list_component__WEBPACK_IMPORTED_MODULE_11__["ImageListComponent"], }
         ]
     }
 ];

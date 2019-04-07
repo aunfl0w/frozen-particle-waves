@@ -243,7 +243,7 @@ var LoginComponent = /** @class */ (function () {
         var _this = this;
         this.apiService.login(this.loginModel).subscribe(function (data) {
             _this.status = 'Success';
-            _this.router.navigate(['fpw-app']);
+            _this.router.navigate(['fpw-app', 'all']);
         }, function (err) {
             _this.status = 'Invalid Login';
             _this.loginModel = new _models_login_model__WEBPACK_IMPORTED_MODULE_3__["LoginModel"]();
@@ -301,6 +301,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+
 
 
 
@@ -309,6 +311,8 @@ var ApiService = /** @class */ (function () {
         this.http = http;
         this.loginURL = 'api/login.json';
         this.cameraInfoUrl = 'api/camera/info';
+        this.cameraIdList = 'api/camera/{id}/idlist';
+        this.cameraImageIDUrl = 'api/camera/{id}/image/{stamp}';
         this.httpOptions = {
             headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json' })
         };
@@ -318,6 +322,24 @@ var ApiService = /** @class */ (function () {
     };
     ApiService.prototype.camerainfo = function () {
         return this.http.get(this.cameraInfoUrl);
+    };
+    //convert this to pipe
+    ApiService.prototype.cameraImageList = function (cameraId) {
+        var _this = this;
+        return new rxjs__WEBPACK_IMPORTED_MODULE_3__["Observable"](function (subscriber) {
+            var getURL = _this.cameraIdList.replace('{id}', cameraId);
+            _this.http.get(getURL, { observe: 'response', responseType: 'json' }).subscribe(function (data) {
+                console.log(data.body);
+                for (var _i = 0, _a = data.body; _i < _a.length; _i++) {
+                    var element = _a[_i];
+                    var nextImageUrl = _this.cameraImageIDUrl.replace('{id}', cameraId).replace('{stamp}', element);
+                    subscriber.next(nextImageUrl);
+                }
+            }, function (error) {
+                console.log(error);
+                subscriber.error(error);
+            });
+        });
     };
     ApiService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({

@@ -20,6 +20,7 @@ server/.settings/
 server/.classpath
 server/.factorypath
 server/.project
+tmp/
 
 #spring stuff
 .springBeans

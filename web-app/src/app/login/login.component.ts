@@ -19,7 +19,7 @@ export class LoginComponent {
     this.apiService.login(this.loginModel).subscribe(
       (data: any) => {
         this.status = 'Success'
-        this.router.navigate(['fpw-app']);
+        this.router.navigate(['fpw-app','all']);
       }, (err: any) => {
         this.status = 'Invalid Login';
         this.loginModel = new LoginModel();

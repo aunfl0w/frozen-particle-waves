@@ -1,3 +1,4 @@
-<p>
-  image-list works!
-</p>
+Camera selected is {{cameraId}}
+<div *ngFor="let cameraURL of urls">
+  <app-camera [cameraURL]="cameraURL"></app-camera>
+</div>

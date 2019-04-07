@@ -12,6 +12,8 @@ import { LoginModel } from '../models/login.model';
 export class ApiService {
   private loginURL = 'api/login.json';
   private cameraInfoUrl = 'api/camera/info';
+  private cameraIdList = 'api/camera/{id}/idlist';
+  private cameraImageIDUrl = 'api/camera/{id}/image/{stamp}'
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -27,6 +29,28 @@ export class ApiService {
   camerainfo(): Observable<any> {
     return this.http.get(this.cameraInfoUrl);
   }
+
+  //convert this to pipe
+  cameraImageList(cameraId: string): Observable<any> {
+    return new Observable(subscriber => {
+      let getURL = this.cameraIdList.replace('{id}', cameraId)
+      this.http.get(getURL, { observe: 'response', responseType: 'json' }).subscribe(
+        (data: any) => {
+          console.log(data.body)
+          for (let element of data.body) {
+            let nextImageUrl = this.cameraImageIDUrl.replace('{id}', cameraId).replace('{stamp}', element)
+            subscriber.next(nextImageUrl)
+          }
+        }, (error: any) => {
+          console.log(error)
+          subscriber.error(error)
+        }
+      )
+    }
+    )
+  }
+
+
 
 
 

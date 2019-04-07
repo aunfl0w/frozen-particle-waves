@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from 'src/app/shared/api.service';
 
 @Component({
   selector: 'app-image-list',
@@ -6,10 +8,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./image-list.component.scss']
 })
 export class ImageListComponent implements OnInit {
+  dataupdater = (data: any) => {
+    console.log(data)
+    this.urls.push(data)
+  }
 
-  constructor() { }
+  urls: string[] = [];
+
+  @Input() cameraId: string
+  constructor(private activeRoute: ActivatedRoute, private apiService: ApiService) {
+    console.log('ImageListComponent constructor')
+  }
+
+
 
   ngOnInit() {
+    this.cameraId = this.activeRoute.snapshot.params['id'];
+    this.activeRoute.params.subscribe(params => {
+      this.urls = []
+      this.cameraId = params.id
+      this.apiService.cameraImageList(this.cameraId).subscribe(this.dataupdater)
+    })
   }
 
 }
