@@ -37,7 +37,9 @@ server/src/main/resources/resources/runtim.j*
 server/src/main/resources/resources/styles.j*
 server/src/main/resources/resources/es2015-*
 server/src/main/resources/resources/3rdpartylicenses.txt
-server/src/main/resources/resources/styles*.css
+server/src/main/resources/resources/styles*.cs
+server/src/main/resources/resources/5*.js
+
 
 
 divx2pass*
