@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginModel: LoginModel = new LoginModel();
-  status: string = "Login";
+  status: string = '';
 
   constructor(private apiService: ApiService,
     private router: Router) { }
@@ -21,7 +21,8 @@ export class LoginComponent {
         this.status = 'Success'
         this.router.navigate(['fpw-app','all']);
       }, (err: any) => {
-        this.status = 'Invalid Login';
+        this.status = '' + err.status + ' ' + err.statusText;
+        console.log(err);
         this.loginModel = new LoginModel();
       }, () => {
         console.log('login is done');

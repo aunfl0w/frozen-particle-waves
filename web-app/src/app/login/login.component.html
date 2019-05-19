@@ -10,7 +10,7 @@
     <p>
       <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
-        <input required matInput placeholder="" [(ngModel)]="loginModel.password" name="password">
+        <input type=password required matInput placeholder="" [(ngModel)]="loginModel.password" name="password">
         <mat-icon matSuffix>security</mat-icon>
       </mat-form-field>
     </p>
@@ -23,9 +23,9 @@
     </p>
   </form>
   <p></p>
-  <mat-card class="statuscard">
+  <mat-card *ngIf="status != ''" class="statuscard">
     <mat-card-content>
-      Status: {{status}}
+      {{status}}
     </mat-card-content>
   </mat-card>
 </div>
