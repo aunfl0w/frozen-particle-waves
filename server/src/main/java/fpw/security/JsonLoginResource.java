@@ -7,15 +7,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * login and logout with json requests post in json body to login.json {
- * "userName" : "admin" , "password" : "password" }
+ * "userName" : "admin" , "password" : "password", rememberMe: boolean}
  * 
  * @author aunfl0w
  *
@@ -34,34 +35,34 @@ public class JsonLoginResource {
 
 	@Autowired
 	AuthenticationManager authenticationManager;
-	
+
+	@Autowired
+	UserDetailsService userDeatilsService;
+
+	@Value("${authn.password.remembermekey:fpw}")
+	String rememberMeKey;
 
 	@RequestMapping(value = "/login.json", method = RequestMethod.POST)
 	public void jsonLoginAttempt(@RequestBody LoginRequest loginRequest, HttpServletRequest request,
 			HttpServletResponse response) {
 
 		try {
-			
-			
+
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 					loginRequest.getUserName(), loginRequest.getPassword());
-			
-			//TODO
-			if (loginRequest.isRememberMe()) {
-				//token = new RememberMeAuthenticationToken("frozenparticlewavesrememberme",token,null);
-			}
-			
+
 			token.setDetails(new WebAuthenticationDetails(request));
 
 			Authentication auth = authenticationManager.authenticate(token);
 			SecurityContext securityContext = SecurityContextHolder.getContext();
 			securityContext.setAuthentication(auth);
-			
 
 			if (auth.isAuthenticated()) {
-				// how to do without session?
 				HttpSession session = request.getSession(true);
 				session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+				if (loginRequest.isRememberMe()) {
+					addRememberMeCookie(request, response, auth);
+				}
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			} else {
 				SecurityContextHolder.getContext().setAuthentication(null);
@@ -70,6 +71,12 @@ public class JsonLoginResource {
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		}
+
+	}
+
+	private void addRememberMeCookie(HttpServletRequest request, HttpServletResponse response, Authentication auth) {
+		TokenBasedRememberMeServices tbrs = new TokenBasedRememberMeServices(rememberMeKey, userDeatilsService);
+		tbrs.onLoginSuccess(request, response, auth);
 
 	}
 

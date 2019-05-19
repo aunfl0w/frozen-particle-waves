@@ -31,6 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${authn.password.user:password}") 
 	String userPassword; 
 	
+	@Value("${authn.password.remembermekey:fpw}")
+	String rememberMeKey;
+	
 	@Override
 	@Bean
 	protected UserDetailsService userDetailsService() {
@@ -54,24 +57,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/api/c**")
-			.authenticated()
+			.antMatchers("/api/log**").permitAll()
+			.anyRequest().authenticated()
 		.and()
 			.csrf()
 			.disable()
 			.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 			.and().formLogin().successHandler(authenticationSuccessHandler)
-			.failureHandler(authenticationFailureHandler);
-			
+			.failureHandler(authenticationFailureHandler)
+			.and()
+			.rememberMe()
+			.alwaysRemember(true)
+			.key(rememberMeKey);
 		
 	}
+	
 
-	@Bean
+	
+	@Bean("authenticationManager")
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-	
-	
 	
 }
