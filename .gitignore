@@ -30,15 +30,9 @@ deploy
 
 #resources
 server/src/main/resources/resources/index.html
-server/src/main/resources/resources/main.j*
-server/src/main/resources/resources/polyfill.j*
-server/src/main/resources/resources/vendor.j*
-server/src/main/resources/resources/runtim.j*
-server/src/main/resources/resources/styles.j*
-server/src/main/resources/resources/es2015-*
+server/src/main/resources/resources/.js
 server/src/main/resources/resources/3rdpartylicenses.txt
-server/src/main/resources/resources/styles*.cs
-server/src/main/resources/resources/5*.js
+server/src/main/resources/resources/*.css
 
 
 
