@@ -60,6 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/log**").permitAll()
 			.antMatchers("/api/c**").authenticated()
 		.and()
+			.headers()
+			.disable()
 			.csrf()
 			.disable()
 			.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
