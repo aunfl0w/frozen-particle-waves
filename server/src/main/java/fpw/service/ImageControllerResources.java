@@ -32,7 +32,7 @@ import fpw.service.storage.ImageStorage;
 @RestController
 @RequestMapping("api/")
 public class ImageControllerResources {
-	private static final Logger log = LoggerFactory.getLogger(ImageControllerResources.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageControllerResources.class);
 	
 
 	
@@ -50,7 +50,7 @@ public class ImageControllerResources {
 
 	@RequestMapping("/camera/status")
 	public String getStatus(Principal p) throws Exception {
-		log.info("Principal is " + p.getName());
+		LOGGER.info("Principal is " + p.getName());
 		return (new Date()).toString();
 	}
 
@@ -117,7 +117,7 @@ public class ImageControllerResources {
 			scaleby = 1.0f;
 		qualityby = 0.25f;
 
-		log.info(String.format("Image is %d by %d scale to %f quality to %f", buffImage.getWidth(),
+		LOGGER.info(String.format("Image is %d by %d scale to %f quality to %f", buffImage.getWidth(),
 				buffImage.getHeight(), scaleby, qualityby));
 
 		// scale image
