@@ -6,7 +6,7 @@ import { ApiService } from 'src/app/shared/api.service';
   styleUrls: ['./main-content.component.scss']
 })
 export class MainContentComponent implements OnInit {
-  camerainfo: any
+  camerainfo: any;
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
@@ -15,9 +15,10 @@ export class MainContentComponent implements OnInit {
         console.log(data);
         this.camerainfo = data;
       }, (err: any) => {
-        console.error("error getting camera list: " + err);
+        console.error('error getting camera list: ' + err);
       }
-    )
+    );
+    this.apiService.registerSocket();
   }
 
 }

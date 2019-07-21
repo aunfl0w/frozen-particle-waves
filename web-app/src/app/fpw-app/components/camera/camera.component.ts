@@ -6,9 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./camera.component.scss']
 })
 export class CameraComponent implements OnInit {
-  @Input() description: string
-  @Input() cameraId: string
-  @Input() cameraURL: string
+  @Input() description: string;
+  @Input() cameraId: string;
+  @Input() cameraURL: string;
   constructor() { }
 
   ngOnInit() {
@@ -16,9 +16,9 @@ export class CameraComponent implements OnInit {
 
   getCameraURL(): string {
     if (this.cameraId) {
-      return 'api/camera/' + this.cameraId + '/image'
+      return 'api/camera/' + this.cameraId + '/image';
     } else {
-      return this.cameraURL
+      return this.cameraURL;
     }
   }
 

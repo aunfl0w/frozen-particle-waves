@@ -8,27 +8,32 @@ import { ApiService } from 'src/app/shared/api.service';
   styleUrls: ['./image-list.component.scss']
 })
 export class ImageListComponent implements OnInit {
-  dataupdater = (data: any) => {
-    console.log(data)
-    this.urls.push(data)
-  }
-
-  urls: string[] = [];
-
-  @Input() cameraId: string
   constructor(private activeRoute: ActivatedRoute, private apiService: ApiService) {
-    console.log('ImageListComponent constructor')
+    console.log('ImageListComponent constructor');
+  }
+  urls: string[] = [];
+  cameraName = '';
+
+
+  @Input() cameraId: string;
+
+
+  dataupdater = (data: any) => {
+    console.log(data);
+    this.urls.push(data);
   }
 
 
 
   ngOnInit() {
-    this.cameraId = this.activeRoute.snapshot.params['id'];
+    this.cameraId = this.activeRoute.snapshot.params.id;
     this.activeRoute.params.subscribe(params => {
-      this.urls = []
-      this.cameraId = params.id
-      this.apiService.cameraImageList(this.cameraId).subscribe(this.dataupdater)
-    })
+      this.urls = [];
+      this.cameraId = params.id;
+      this.apiService.cameraImageList(this.cameraId).subscribe(this.dataupdater);
+      this.cameraName = this.apiService.getCameraName(this.cameraId);
+    });
+
   }
 
 }

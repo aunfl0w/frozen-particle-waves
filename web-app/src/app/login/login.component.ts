@@ -10,16 +10,16 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginModel: LoginModel = new LoginModel();
-  status: string = '';
+  status = '';
 
   constructor(private apiService: ApiService,
-    private router: Router) { }
+              private router: Router) { }
 
   login() {
     this.apiService.login(this.loginModel).subscribe(
       (data: any) => {
-        this.status = 'Success'
-        this.router.navigate(['fpw-app','all']);
+        this.status = 'Success';
+        this.router.navigate(['fpw-app', 'all']);
       }, (err: any) => {
         this.status = '' + err.status + ' ' + err.statusText;
         console.log(err);

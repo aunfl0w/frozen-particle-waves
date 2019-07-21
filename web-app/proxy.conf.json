@@ -1,4 +1,10 @@
 {
+  "/fpw2/api/communication*": {
+    "target": "ws://localhost:8080",
+    "secure": false,
+    "WS": true,
+    "logLevel": "debug"
+  },
   "/fpw2/api/*": {
     "target": "http://localhost:8080",
     "secure": false,

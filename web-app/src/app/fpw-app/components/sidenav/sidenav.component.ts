@@ -16,9 +16,9 @@ export class SidenavComponent implements OnInit {
     matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
   constructor(private zone: NgZone,
-    private apiService: ApiService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute) {
+              private apiService: ApiService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
   }
   camerainfo: any;
 
@@ -30,9 +30,9 @@ export class SidenavComponent implements OnInit {
         console.log(data);
         this.camerainfo = data;
       }, (err: any) => {
-        console.error("error getting camera list: " + err);
+        console.error('error getting camera list: ' + err);
       }
-    )
+    );
   }
 
   clickAllCameras(): void {
@@ -40,14 +40,14 @@ export class SidenavComponent implements OnInit {
   }
 
   clickCamera(cameraId: string): void {
-    console.log("clickCamera()")
-    console.log(cameraId)
-    this.router.navigate(['image-list', cameraId], { relativeTo: this.activatedRoute })
+    console.log('clickCamera()');
+    console.log(cameraId);
+    this.router.navigate(['image-list', cameraId], { relativeTo: this.activatedRoute });
 
   }
 
   isScreenSmall(): boolean {
-    return this.mediaMatcher.matches
+    return this.mediaMatcher.matches;
   }
 
   toggleSideNav() {

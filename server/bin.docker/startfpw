@@ -25,7 +25,7 @@ data_path=${DATA_PATH:=/home/fpw/fpwdata}
 admin_pass=${ADMIN_PASS:="password$HOSTNAME$RANDOM"}
 standard_pass=${STANDARD_PASS:="password$HOSTNAME$RANDOM"}
 camera_config=${CAMERA_CONFIG:=/home/fpw/Cameras.xml}
-image_update_ms=${IMAGE_UPDATE_MS:=25000}
+image_update_ms=${IMAGE_UPDATE_MS:=5000}
 
 
 
