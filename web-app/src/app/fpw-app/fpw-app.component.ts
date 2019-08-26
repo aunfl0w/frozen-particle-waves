@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../shared/api.service';
 
 @Component({
   selector: 'app-fpw-app',
@@ -11,9 +12,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FpwAppComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private apiService: ApiService) { }
+  
   ngOnInit() {
+    this.apiService.startCameraData();
   }
 
 }

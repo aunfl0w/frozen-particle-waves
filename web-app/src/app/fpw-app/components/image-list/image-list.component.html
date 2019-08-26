@@ -1,4 +1,5 @@
-<div class="image-list-text">Camera selected is {{cameraName}}</div>
+<div class="image-list-text"><h1>History: {{listDescription}}</h1></div>
+<p></p>
 <div *ngFor="let cameraURL of urls">
-  <app-camera [cameraURL]="cameraURL"></app-camera>
+  <app-camera [imageUrl]="cameraURL" [update]=false [description]="getDescription(cameraURL)"></app-camera>
 </div>

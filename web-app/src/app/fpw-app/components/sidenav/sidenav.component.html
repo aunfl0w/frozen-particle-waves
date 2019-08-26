@@ -12,10 +12,10 @@
             </mat-list-item>
         </mat-nav-list>
 
-        <mat-nav-list *ngFor="let camera of camerainfo">
-            <mat-list-item (click)="clickCamera(camera.id)">
+        <mat-nav-list *ngFor="let camera of cameraData">
+            <mat-list-item (click)="clickCamera(camera)">
                 <mat-icon matSuffix>camera</mat-icon>
-                {{camera.description}}
+                {{camera.getDescription()}}
             </mat-list-item>
         </mat-nav-list>
 

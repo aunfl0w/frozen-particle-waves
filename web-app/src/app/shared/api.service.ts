@@ -2,10 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpParams, HttpHeaders } from '@angular/common/http';
 
 
-import { Observable } from 'rxjs';
+
+import { Observable, Subscriber, ReplaySubject, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { WebSocketSubject } from 'rxjs/webSocket';
 
 import { LoginModel } from '../models/login.model';
+import { PictureUpdateMessage } from '../models/picture-update-messsage';
+import { CameraData, CameraInfo } from '../models';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +20,8 @@ export class ApiService {
   private cameraInfoUrl = 'api/camera/info';
   private cameraIdList = 'api/camera/{id}/idlist';
   private cameraImageIDUrl = 'api/camera/{id}/image/{stamp}';
-  private webSocketURL = 'fpw2/api/communications';
-  private cameraInfo: any;
+  private webSocketURL = 'fpw2/api/socket';
+  private cameraInfo$ = new ReplaySubject<CameraData>();
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -29,41 +34,22 @@ export class ApiService {
     return this.http.post(this.loginURL, logindata, { observe: 'response', responseType: 'json' });
   }
 
-  camerainfo(): Observable<any> {
-    return this.http.get(this.cameraInfoUrl).pipe(
-      tap(val =>
-        this.cameraInfo = val
-      )
-    );
+  getCameraData(): Observable<CameraData> {
+    return this.cameraInfo$.asObservable();
   }
 
-  cameraImageList(cameraId: string): Observable<any> {
-    return new Observable(subscriber => {
-      const getURL = this.cameraIdList.replace('{id}', cameraId);
-      this.http.get(getURL, { observe: 'response', responseType: 'json' }).subscribe(
-        (data: any) => {
-          console.log(data.body);
-          for (const element of data.body) {
-            const nextImageUrl = this.cameraImageIDUrl.replace('{id}', cameraId).replace('{stamp}', element);
-            subscriber.next(nextImageUrl);
-          }
-        }, (error: any) => {
-          console.log(error);
-          subscriber.error(error);
-        }
-      );
-    }
-    );
-  }
+  startCameraData() {
+    this.http.get(this.cameraInfoUrl).subscribe(
+      (data) => {
+        const cameraInfo = <CameraInfo[]>data;
+        cameraInfo.forEach(x => {
+          const cameraData = new CameraData(x);
+          this.cameraInfo$.next(cameraData);
+          this.loadHistoryList(cameraData);
+        });
 
-  getCameraName(cameraId: string): string {
-    for (const camera of this.cameraInfo) {
-      console.log(camera);
-      if (camera.id === cameraId) {
-        return camera.description;
-      }
-    }
-    return 'Unknown';
+        this.registerSocket();
+      });
   }
 
   registerSocket() {
@@ -76,13 +62,27 @@ export class ApiService {
     }
     socketurl += '//' + loc.host + '/';
     socketurl += this.webSocketURL;
-    console.log(socketurl);
-    const socket = new WebSocket(socketurl);
+    console.log(`--> starting socket subject on ${socketurl}`);
 
-    socket.onmessage = (message) => {
-      console.log(message);
-    };
+    new WebSocketSubject<PictureUpdateMessage>(socketurl).subscribe(
+      (data) => {
+        this.cameraInfo$.subscribe(cameraInfo => {
+          cameraInfo.tryUpdate(data);
+        }).unsubscribe();
+      });
+  }
+
+  loadHistoryList(cameraData: CameraData) {
+    const getURL = this.cameraIdList.replace('{id}', cameraData.getId());
+    this.http.get(getURL, { observe: 'response', responseType: 'json' }).subscribe(
+      (data: any) => {
+        console.log(data.body);
+        for (const timestamp of data.body) {
+          cameraData.addURLHistory(timestamp);
+        }
+      }, (error: any) => {
+        console.log(error);
+      });
   }
 
 }
-

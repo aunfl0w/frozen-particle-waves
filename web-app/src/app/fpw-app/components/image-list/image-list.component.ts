@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/shared/api.service';
+import { CameraData } from 'src/app/models';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-image-list',
@@ -12,28 +14,31 @@ export class ImageListComponent implements OnInit {
     console.log('ImageListComponent constructor');
   }
   urls: string[] = [];
-  cameraName = '';
-
-
-  @Input() cameraId: string;
-
-
-  dataupdater = (data: any) => {
-    console.log(data);
-    this.urls.push(data);
-  }
-
+  cameraId: string;
+  cameraData: CameraData;
+  listDescription: string;
+  description = '';
 
 
   ngOnInit() {
-    this.cameraId = this.activeRoute.snapshot.params.id;
     this.activeRoute.params.subscribe(params => {
-      this.urls = [];
       this.cameraId = params.id;
-      this.apiService.cameraImageList(this.cameraId).subscribe(this.dataupdater);
-      this.cameraName = this.apiService.getCameraName(this.cameraId);
+      const filteredObservable = this.apiService.getCameraData().pipe(filter((data => data.getId() === this.cameraId)))
+      filteredObservable.subscribe(cameraData => {
+        this.cameraData = cameraData;
+        this.urls = cameraData.getURLHistory();
+        this.listDescription = cameraData.getDescription();
+      });
     });
 
   }
+  getDescription(url: string){
+    const start = url.lastIndexOf('/') + 1;
+    const timestamp = url.substring(start,url.length);
+    const date = new Date(Number(timestamp));
+    const caldate = date.toLocaleDateString();
+    const clockdate = date.toLocaleTimeString();
 
+    return `${caldate} ${clockdate}`;
+  }
 }

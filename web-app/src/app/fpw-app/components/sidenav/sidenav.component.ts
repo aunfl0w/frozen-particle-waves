@@ -1,7 +1,8 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { ApiService } from 'src/app/shared/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CameraData } from 'src/app/models';
 
 
 const SMALL_WIDTH_BREAKPOINT = 720;
@@ -16,33 +17,33 @@ export class SidenavComponent implements OnInit {
     matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
   constructor(private zone: NgZone,
-              private apiService: ApiService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private apiService : ApiService) {
   }
-  camerainfo: any;
+  cameraData: CameraData[] = [];
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
 
   ngOnInit() {
-    this.apiService.camerainfo().subscribe(
-      (data: any) => {
+    this.loadCameraData();
+  }
+  async loadCameraData(){
+    await this.apiService.getCameraData().subscribe(
+      (data) => {
+        console.log(`adding data for sidenav`);
         console.log(data);
-        this.camerainfo = data;
-      }, (err: any) => {
-        console.error('error getting camera list: ' + err);
-      }
-    );
+        this.cameraData = this.cameraData.concat([data]);
+      });
   }
 
   clickAllCameras(): void {
     this.router.navigate(['all'], { relativeTo: this.activatedRoute });
   }
 
-  clickCamera(cameraId: string): void {
-    console.log('clickCamera()');
-    console.log(cameraId);
-    this.router.navigate(['image-list', cameraId], { relativeTo: this.activatedRoute });
+  clickCamera(camera: CameraData): void {
+    console.log(`clickCamera(${camera.getId()})`);
+    this.router.navigate(['image-list', camera.getId()], { relativeTo: this.activatedRoute });
 
   }
 

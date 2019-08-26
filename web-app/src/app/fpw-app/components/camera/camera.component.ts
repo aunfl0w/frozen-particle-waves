@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CameraData } from 'src/app/models';
 
 @Component({
   selector: 'app-camera',
@@ -6,20 +7,17 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./camera.component.scss']
 })
 export class CameraComponent implements OnInit {
-  @Input() description: string;
-  @Input() cameraId: string;
-  @Input() cameraURL: string;
+  @Input() cameraData: CameraData;
+  @Input() update?: boolean = true;
+  @Input() imageUrl?: string;
+  @Input() description?: string;
   constructor() { }
 
   ngOnInit() {
-  }
-
-  getCameraURL(): string {
-    if (this.cameraId) {
-      return 'api/camera/' + this.cameraId + '/image';
-    } else {
-      return this.cameraURL;
+    if (this.update) {
+      this.cameraData.getURL().subscribe(url => {
+        this.imageUrl = url;
+      });
     }
   }
-
 }
