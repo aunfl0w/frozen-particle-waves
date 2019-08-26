@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import fpw.domain.image.ImageRetriever;
@@ -18,8 +19,7 @@ import fpw.domain.image.ImageRetriever;
 public class ImageRetrieverService {
 
 	ImageStorageService imageStorageService;
-
-	WebSocketNotifier wsn;
+	ApplicationEventPublisher eventPublisher;
 
 	private Map<String, ImageRetriever> imageRetrievers = new HashMap<String, ImageRetriever>();
 	private Map<String, QueueImageService> queueIR = new HashMap<String, QueueImageService>();
@@ -34,10 +34,10 @@ public class ImageRetrieverService {
 
 	@Autowired
 	public ImageRetrieverService(@Value("${camera.config.file}") String configFile,
-			@Value("${camera.config.requestWait:15000}") int requestWait, ImageStorageService iss,
-			WebSocketNotifier wsn) throws FileNotFoundException {
+			@Value("${camera.config.requestWait:15000}") int requestWait, ImageStorageService iss, ApplicationEventPublisher eventPublisher)
+			throws FileNotFoundException {
 		imageStorageService = iss;
-		this.wsn = wsn;
+		this.eventPublisher = eventPublisher; 
 		loageImageRetrievers(configFile, requestWait);
 	}
 
@@ -57,7 +57,7 @@ public class ImageRetrieverService {
 
 	private void scheduleThreads() {
 		for (QueueImageService qir : queueIR.values()) {
-			qir.setNotifier(wsn);
+			qir.setNotifier(eventPublisher);
 			Thread t = new Thread(qir, qir.ir.getID() + " Thread");
 			t.setDaemon(true);
 			t.start();

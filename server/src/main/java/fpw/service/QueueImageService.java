@@ -2,16 +2,19 @@ package fpw.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 
 import fpw.domain.image.FailImage;
 import fpw.domain.image.Image;
 import fpw.domain.image.ImageRetriever;
+import fpw.events.ClientCommunication;
+import fpw.events.ClientCommunicationEvent;
 
 public class QueueImageService implements Runnable {
 
 	private static final Logger log = LoggerFactory.getLogger(QueueImageService.class);
-	WebSocketNotifier wsn = null;
 	ImageRetriever ir;
+	ApplicationEventPublisher eventPublisher;
 	ImageStorageService iss;
 	int requestWait = 15000;
 
@@ -22,6 +25,7 @@ public class QueueImageService implements Runnable {
 		ir = ir2;
 		iss = imageStorageService;
 		this.requestWait = timeoutMS;
+
 	}
 
 	public void run() {
@@ -59,15 +63,18 @@ public class QueueImageService implements Runnable {
 	}
 
 	private void notifyClients(String cameraID, Long imageID) {
-		if (wsn == null) {
-			log.error("wsn is null. cannot notify about " + cameraID + " : " + imageID);
-		} else {
-			wsn.announceUpdate(cameraID, imageID);
-		}
+		log.info("notify clients " + cameraID + " : " + imageID);
+		ClientCommunication com = new ClientCommunication();
+		com.setImageID(imageID);
+		com.setMessageType("1");
+		com.setUpdateCamera(cameraID);
+		ClientCommunicationEvent event = new ClientCommunicationEvent(this, com);
+		eventPublisher.publishEvent(event);
 	}
 
-	public void setNotifier(WebSocketNotifier wsn) {
-		this.wsn = wsn;
+	public void setNotifier(ApplicationEventPublisher eventPublisher) {
+		this.eventPublisher = eventPublisher;
+
 	}
 
 }

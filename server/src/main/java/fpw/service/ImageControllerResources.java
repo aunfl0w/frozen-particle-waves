@@ -33,9 +33,7 @@ import fpw.service.storage.ImageStorage;
 @RequestMapping("api/")
 public class ImageControllerResources {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageControllerResources.class);
-	
 
-	
 	@Autowired
 	VideoProducerService videoProducerService;
 
@@ -44,9 +42,6 @@ public class ImageControllerResources {
 
 	@Autowired
 	ImageRetrieverService imageRS;
-
-	@Autowired
-	WebSocketNotifier ws;
 
 	@RequestMapping("/camera/status")
 	public String getStatus(Principal p) throws Exception {
@@ -82,12 +77,11 @@ public class ImageControllerResources {
 
 	@RequestMapping("/camera/{cameraID}/video")
 	@ResponseBody
-	public void getidVideo(@PathVariable String cameraID, HttpServletResponse response) throws IOException, InterruptedException {
+	public void getidVideo(@PathVariable String cameraID, HttpServletResponse response)
+			throws IOException, InterruptedException {
 		List<String> pathList = iss.getImagePathList(cameraID);
 		videoProducerService.sendVideo(response, pathList, cameraID);
 	}
-
-	
 
 	void writeImage(HttpServletResponse response, ImageStorage img) throws IOException, FileNotFoundException {
 
