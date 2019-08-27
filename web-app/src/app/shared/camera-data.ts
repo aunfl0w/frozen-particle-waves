@@ -25,7 +25,7 @@ export class CameraData {
 
     addURLHistory(timestamp: string){ 
         const nextUrl = `api/camera/${this.cameraInfo.id}/image/${timestamp}`;
-        this.urlHistory.unshift(nextUrl);
+        this.urlHistory.push(nextUrl);
     }
 
     getURLHistory(): string[] {
