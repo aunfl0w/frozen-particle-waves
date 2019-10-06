@@ -18,7 +18,7 @@ export class ImageListComponent implements OnInit {
   cameraData: CameraData;
   listDescription: string;
   description = '';
-
+  columns: number = 1;
 
   ngOnInit() {
     this.activeRoute.params.subscribe(params => {
@@ -30,6 +30,7 @@ export class ImageListComponent implements OnInit {
         this.listDescription = cameraData.getDescription();
       });
     });
+    this.onResize();
 
   }
   getDescription(url: string){
@@ -40,5 +41,13 @@ export class ImageListComponent implements OnInit {
     const clockdate = date.toLocaleTimeString();
 
     return `${caldate} ${clockdate}`;
+  }
+  onResize() {
+    [0, 800, 1200, 1600, 100_000].some((pixels, columnCount) => {
+      if (window.innerWidth < pixels) {
+        this.columns = columnCount;
+        return true;
+      }
+    });
   }
 }
