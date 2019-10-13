@@ -1,4 +1,4 @@
 <mat-card>
   <mat-card-title>{{description}}</mat-card-title>
-  <img mat-card-image [src]="imageUrl" loading="lazy">
+  <img mat-card-image [src]="imageUrl" [attr.loading]="getLazy()">
 </mat-card>

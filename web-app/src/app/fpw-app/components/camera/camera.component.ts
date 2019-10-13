@@ -11,6 +11,8 @@ export class CameraComponent implements OnInit {
   @Input() update?: boolean = true;
   @Input() imageUrl?: string;
   @Input() description?: string;
+  @Input() lazyLoad?: boolean = true;
+
   constructor() { }
 
   ngOnInit() {
@@ -19,5 +21,8 @@ export class CameraComponent implements OnInit {
         this.imageUrl = url;
       });
     }
+  }
+  getLazy():string{
+    return this.lazyLoad ? 'lazy' : null;
   }
 }
