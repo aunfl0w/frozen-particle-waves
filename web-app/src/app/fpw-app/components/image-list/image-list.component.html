@@ -2,7 +2,7 @@
   <h1>History: {{listDescription}}</h1>
 </div>
 <p></p>
-<mat-grid-list style="height: 100%" [cols]="columns" (window:resize)="onResize()">
+<mat-grid-list [cols]="columns" (window:resize)="onResize()">
   <div *ngFor="let cameraURL of urls">
     <mat-grid-tile >
       <app-camera [imageUrl]="cameraURL" [update]=false [description]="getDescription(cameraURL)"></app-camera>

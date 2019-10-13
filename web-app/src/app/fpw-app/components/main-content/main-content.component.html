@@ -1,4 +1,4 @@
-<mat-grid-list style="height: 100%" [cols]="columns" (window:resize)="onResize()">
+<mat-grid-list [cols]="columns" (window:resize)="onResize()" >
     <mat-grid-tile *ngFor="let camera of cameraData">
         <app-camera [cameraData]="camera" [description]="camera.getDescription()" [lazyLoad]=false></app-camera>
     </mat-grid-tile>
