@@ -39,16 +39,23 @@ export class SidenavComponent implements OnInit {
 
   clickAllCameras(): void {
     this.router.navigate(['all'], { relativeTo: this.activatedRoute });
+    this.closeIfSmallScreen();
   }
 
   clickCamera(camera: CameraData): void {
     console.log(`clickCamera(${camera.getId()})`);
     this.router.navigate(['image-list', camera.getId()], { relativeTo: this.activatedRoute });
-
+    this.closeIfSmallScreen();
   }
 
   isScreenSmall(): boolean {
     return this.mediaMatcher.matches;
+  }
+
+  closeIfSmallScreen() {
+    if (this.isScreenSmall()){
+      this.sidenav.close();
+    }
   }
 
   toggleSideNav() {
