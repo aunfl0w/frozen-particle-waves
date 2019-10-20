@@ -1,5 +1,5 @@
 #!/bin/bash 
-OUTDIR=../src/main/resources/resources
+OUTDIR=../web-app/src/assets/
 SIZE=120
 NAME=apple-touch-icon.png
 convert -resize x$SIZE largest.png $OUTDIR/$NAME
