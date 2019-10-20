@@ -35,6 +35,7 @@ server/src/main/resources/resources/*.ico
 server/src/main/resources/resources/3rdpartylicenses.txt
 server/src/main/resources/resources/*.css
 server/src/main/resources/resources/*
+.vscode/
 
 
 
