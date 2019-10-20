@@ -11,10 +11,10 @@ rm server/src/main/resources/resources/polyfills*
 rm server/src/main/resources/resources/runtime*
 rm server/src/main/resources/resources/styles*
 rm server/src/main/resources/resources/vendor*
-rm server/src/main/resources/resources/#*.js
+rm server/src/main/resources/resources/*.js
 
 cd web-app
 npm install
 ng build --prod --build-optimizer
-cp dist/web-app/* ../server/src/main/resources/resources/
+cp -r dist/web-app/* ../server/src/main/resources/resources/
 echo COMPLETED ANGULAR UI WEB APP BUILD AND INSTALL
