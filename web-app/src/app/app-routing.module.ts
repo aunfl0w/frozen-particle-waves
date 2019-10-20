@@ -5,7 +5,7 @@ import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'fpw-app', loadChildren: './fpw-app/fpw.module#FpwModule' },
+  { path: 'fpw-app', loadChildren: () => import('./fpw-app/fpw.module').then(m => m.FpwModule) },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];

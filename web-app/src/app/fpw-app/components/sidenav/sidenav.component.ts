@@ -23,7 +23,7 @@ export class SidenavComponent implements OnInit {
   }
   cameraData: CameraData[] = [];
 
-  @ViewChild(MatSidenav) sidenav: MatSidenav;
+  @ViewChild(MatSidenav, { static: true }) sidenav: MatSidenav;
 
   ngOnInit() {
     this.loadCameraData();
