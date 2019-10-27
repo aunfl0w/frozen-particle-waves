@@ -11,14 +11,16 @@ import { FpwAppComponent } from './fpw-app.component';
 import { MaterialModule } from '../shared/material.module';
 import { ImageListComponent } from './components/image-list/image-list.component';
 import { CameraComponent } from './components/camera/camera.component';
+import { VideoComponent } from './components/video/video.component';
 
 const routes: Routes = [
   {
     path: '', component: FpwAppComponent,
     children: [
-      { path: '', component: MainContentComponent },
+      { path: '', redirectTo: 'all' },
       { path: 'all', component: MainContentComponent },
-      { path: 'image-list/:id', component: ImageListComponent,  }
+      { path: 'image-list/:id', component: ImageListComponent },
+      { path: 'video/:id', component: VideoComponent }
     ]
   }
 ];
@@ -30,7 +32,8 @@ const routes: Routes = [
     MainContentComponent,
     FpwAppComponent,
     ImageListComponent,
-    CameraComponent
+    CameraComponent,
+    VideoComponent
   ],
   imports: [
     CommonModule,
@@ -38,6 +41,9 @@ const routes: Routes = [
     FlexLayoutModule,
     FormsModule,
     RouterModule.forChild(routes)
+  ],
+  exports: [
+    RouterModule
   ]
 })
 export class FpwModule { }

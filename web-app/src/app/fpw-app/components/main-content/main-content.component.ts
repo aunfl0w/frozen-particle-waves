@@ -3,6 +3,8 @@ import { ApiService } from 'src/app/shared/api.service';
 import { CameraData } from 'src/app/models';
 
 
+
+
 @Component({
   templateUrl: './main-content.component.html',
   styleUrls: ['./main-content.component.scss']
@@ -11,7 +13,9 @@ import { CameraData } from 'src/app/models';
 export class MainContentComponent implements OnInit {
   cameraData: CameraData[] = [];
   columns: number = 1;
-  constructor(private apiService: ApiService) { }
+  constructor(
+    private apiService: ApiService
+  ) { }
 
   ngOnInit() {
     this.apiService.getCameraData().subscribe(data => {
@@ -19,6 +23,7 @@ export class MainContentComponent implements OnInit {
     });
     this.onResize();
   }
+
   onResize() {
     [0, 800, 1500, 2000, 100_000].some((pixels, columnCount) => {
       if (window.innerWidth < pixels) {

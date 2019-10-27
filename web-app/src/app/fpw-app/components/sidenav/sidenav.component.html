@@ -8,14 +8,14 @@
         </mat-toolbar>
 
         <mat-nav-list>
-            <mat-list-item (click)="clickAllCameras()">
+            <mat-list-item [routerLink]="['all']" routerLinkActive="active-menu" (click)="clickAllCameras()">
                 <mat-icon matSuffix>camera_enhance</mat-icon>
                 All Cameras
             </mat-list-item>
         </mat-nav-list>
 
         <mat-nav-list *ngFor="let camera of cameraData">
-            <mat-list-item (click)="clickCamera(camera)">
+            <mat-list-item [routerLink]="['image-list', camera.getId()]" routerLinkActive="active-menu" (click)="clickCamera(camera)">
                 <mat-icon matSuffix>camera</mat-icon>
                 {{camera.getDescription()}}
             </mat-list-item>

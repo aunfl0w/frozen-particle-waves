@@ -1,7 +1,14 @@
 .camera-image {
     border-radius: 5%;
 }
+
 .camera-card {
     border-left: 5px;
     border-right: 5px;
+    border-right: groove;
+}
+
+.mat-card-title {
+    font-size: 20px;
+    line-height: 36px;
 }

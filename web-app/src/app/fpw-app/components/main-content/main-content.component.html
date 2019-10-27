@@ -1,5 +1,9 @@
 <mat-grid-list [cols]="columns" (window:resize)="onResize()" >
     <mat-grid-tile *ngFor="let camera of cameraData">
-        <app-camera [cameraData]="camera" [description]="camera.getDescription()" [lazyLoad]=false></app-camera>
+        <app-camera 
+            [cameraData]="camera" 
+            [description]="camera.getDescription()" 
+            [lazyLoad]=false>
+            <button mat-button [routerLink]="['../video', camera.getId()]"><mat-icon>slow_motion_video</mat-icon>Video</button></app-camera>
     </mat-grid-tile>
 </mat-grid-list>
