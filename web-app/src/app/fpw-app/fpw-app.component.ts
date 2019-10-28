@@ -4,9 +4,7 @@ import { ApiService } from '../shared/api.service';
 @Component({
   selector: 'app-fpw-app',
   template: `
-    <p>
       <app-sidenav></app-sidenav>
-    </p>
   `,
   styles: []
 })
