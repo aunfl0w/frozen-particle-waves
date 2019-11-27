@@ -24,21 +24,16 @@ public class BasicURLCamera implements ImageRetriever {
 		Image image = new Image(id, contentType);
 		byte data[] = null;
 
-		try (
-				ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-				InputStream is = getInputStream(u)
-		) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		InputStream is = getInputStream(u);
 
-			byte buff[] = new byte[1024];
-			int result = -1;
-			do {
-				result = is.read(buff); // need timeout
-				bos.write(buff, 0, result > 0 ? result : 0);
-			} while (result > 0);
-			data = bos.toByteArray();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		byte buff[] = new byte[1024];
+		int result = -1;
+		do {
+			result = is.read(buff); // need timeout
+			bos.write(buff, 0, result > 0 ? result : 0);
+		} while (result > 0);
+		data = bos.toByteArray();
 
 		image.setData(data);
 		return image;
@@ -50,9 +45,8 @@ public class BasicURLCamera implements ImageRetriever {
 		URLConnection conn = u.openConnection();
 		conn.setConnectTimeout(30000);
 		conn.setReadTimeout(30000);
-		conn.setRequestProperty("User-Agent", 
-				String.format("Mozilla/5.0 (Java; %s; FPW 1.0.0)",
-				System.getProperty("java.version")));
+		conn.setRequestProperty("User-Agent",
+				String.format("Mozilla/5.0 (Java; %s; FPW 1.0.0)", System.getProperty("java.version")));
 		conn.connect();
 		is = conn.getInputStream();
 		return is;
