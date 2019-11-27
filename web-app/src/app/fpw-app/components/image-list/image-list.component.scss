@@ -1,11 +1,11 @@
-.image-list-text {
+.box {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.image-list-text {
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    font-size: 16px;
-    height: 48px;
-    padding-bottom: 0px;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 0px;
+}
+.slider {
+
 }

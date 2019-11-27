@@ -1,8 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/shared/api.service';
 import { CameraData } from 'src/app/models';
 import { filter } from 'rxjs/operators';
+import { MatSlideToggleChange } from '@angular/material';
+
+const AUTOUPDATES: string = 'autoupdates';
 
 @Component({
   selector: 'app-image-list',
@@ -11,8 +14,17 @@ import { filter } from 'rxjs/operators';
 })
 export class ImageListComponent implements OnInit {
   constructor(private activeRoute: ActivatedRoute, private apiService: ApiService) {
-    console.log('ImageListComponent constructor');
+    let updateDefault: string = localStorage.getItem(AUTOUPDATES);
+    if (updateDefault && updateDefault == 'on') {
+      this.autoUpdate = true;
+    } else {
+      this.autoUpdate = false;
+    }
+
   }
+
+  autoUpdate: boolean;
+  urlsReference: string[];
   urls: string[] = [];
   cameraId: string;
   cameraData: CameraData;
@@ -26,22 +38,28 @@ export class ImageListComponent implements OnInit {
       const filteredObservable = this.apiService.getCameraData().pipe(filter((data => data.getId() === this.cameraId)))
       filteredObservable.subscribe(cameraData => {
         this.cameraData = cameraData;
-        this.urls = cameraData.getURLHistory();
+        this.urlsReference = cameraData.getURLHistory();
         this.listDescription = cameraData.getDescription();
+        this.setImageMode();
+
+      }, error => {
+        console.log('error' + error);
+      }, () => {
+        console.log('complete');
       });
     });
     this.onResize();
 
   }
-  getDescription(url: string){
+  getDescription(url: string) {
     const start = url.lastIndexOf('/') + 1;
-    const timestamp = url.substring(start,url.length);
+    const timestamp = url.substring(start, url.length);
     const date = new Date(Number(timestamp));
     const caldate = date.toLocaleDateString();
     const clockdate = date.toLocaleTimeString();
-
     return `${caldate} ${clockdate}`;
   }
+
   onResize() {
     [0, 800, 1200, 1600, 100_000].some((pixels, columnCount) => {
       if (window.innerWidth < pixels) {
@@ -50,4 +68,37 @@ export class ImageListComponent implements OnInit {
       }
     });
   }
+
+  setImageMode() {
+    if (this.autoUpdate) {
+      this.dynamicImageUpdateMode();
+    } else {
+      this.noImageUpdateMode();
+    }
+  }
+
+  dynamicImageUpdateMode() {
+    this.urls = this.urlsReference;
+
+  }
+
+  noImageUpdateMode() {
+    this.urls = this.urlsReference.slice(0);
+  }
+
+  storeImageUpdateMode() {
+    if (this.autoUpdate) {
+      localStorage.setItem(AUTOUPDATES, 'on');
+    } else {
+      localStorage.setItem(AUTOUPDATES, 'off');
+    }
+    this.setImageMode()
+
+  }
+  updateChanged(update: MatSlideToggleChange) {
+    this.autoUpdate = update.checked;
+    this.storeImageUpdateMode();
+  }
+
+
 }

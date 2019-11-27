@@ -1,10 +1,15 @@
-<div class="image-list-text">
-  <h1>History: {{listDescription}}</h1>
+<div class="box">
+  <div class="image-list-text">
+    <h1>History: {{listDescription}}</h1>
+  </div>
+  <div class="slider">
+    <mat-slide-toggle [checked]="autoUpdate" (change)="updateChanged($event)">Update</mat-slide-toggle>
+  </div>
 </div>
 <p></p>
 <mat-grid-list [cols]="columns" (window:resize)="onResize()">
   <div *ngFor="let cameraURL of urls">
-    <mat-grid-tile >
+    <mat-grid-tile>
       <app-camera [imageUrl]="cameraURL" [update]=false [description]="getDescription(cameraURL)"></app-camera>
     </mat-grid-tile>
   </div>
