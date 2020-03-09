@@ -30,10 +30,10 @@ const routes: Routes = [
     ToolbarComponent,
     SidenavComponent,
     MainContentComponent,
-    FpwAppComponent,
     ImageListComponent,
     CameraComponent,
-    VideoComponent
+    VideoComponent,
+    FpwAppComponent
   ],
   imports: [
     CommonModule,

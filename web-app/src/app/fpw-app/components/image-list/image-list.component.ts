@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/shared/api.service';
 import { CameraData } from 'src/app/models';
 import { filter } from 'rxjs/operators';
@@ -13,7 +13,11 @@ const AUTOUPDATES: string = 'autoupdates';
   styleUrls: ['./image-list.component.scss']
 })
 export class ImageListComponent implements OnInit {
-  constructor(private activeRoute: ActivatedRoute, private apiService: ApiService) {
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private apiService: ApiService
+  ) {
     let updateDefault: string = localStorage.getItem(AUTOUPDATES);
     if (updateDefault && updateDefault == 'on') {
       this.autoUpdate = true;
@@ -33,7 +37,7 @@ export class ImageListComponent implements OnInit {
   columns: number = 1;
 
   ngOnInit() {
-    this.activeRoute.params.subscribe(params => {
+    this.activatedRoute.params.subscribe(params => {
       this.cameraId = params.id;
       const filteredObservable = this.apiService.getCameraData().pipe(filter((data => data.getId() === this.cameraId)))
       filteredObservable.subscribe(cameraData => {
@@ -95,10 +99,14 @@ export class ImageListComponent implements OnInit {
     this.setImageMode()
 
   }
+
   updateChanged(update: MatSlideToggleChange) {
     this.autoUpdate = update.checked;
     this.storeImageUpdateMode();
   }
 
+  imageClickEvent(event: any) {
+    this.router.navigate([event], { relativeTo: this.activatedRoute.parent });
 
+  }
 }

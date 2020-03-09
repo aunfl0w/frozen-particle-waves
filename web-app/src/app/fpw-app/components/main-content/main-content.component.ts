@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ApiService } from 'src/app/shared/api.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CameraData } from 'src/app/models';
 
 
@@ -9,12 +10,14 @@ import { CameraData } from 'src/app/models';
   templateUrl: './main-content.component.html',
   styleUrls: ['./main-content.component.scss']
 })
-
 export class MainContentComponent implements OnInit {
+
   cameraData: CameraData[] = [];
   columns: number = 1;
   constructor(
-    private apiService: ApiService
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private apiService: ApiService,
   ) { }
 
   ngOnInit() {
@@ -33,6 +36,9 @@ export class MainContentComponent implements OnInit {
     });
   }
 
+  imageClickEvent(event: any) {
+    this.router.navigate(['image-list', event], { relativeTo: this.activatedRoute.parent });
+  }
 }
 
 

@@ -1,6 +1,8 @@
 <mat-grid-list [cols]="columns" (window:resize)="onResize()" >
     <mat-grid-tile *ngFor="let camera of cameraData">
         <app-camera 
+            (clickImage)="imageClickEvent($event)"
+            [clickData]="camera.getId()"
             [cameraData]="camera" 
             [description]="camera.getDescription()" 
             [lazyLoad]=false>

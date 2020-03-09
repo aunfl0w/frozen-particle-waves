@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CameraData } from 'src/app/models';
 
 
-const SMALL_WIDTH_BREAKPOINT = 720;
+const SMALL_WIDTH_BREAKPOINT = 1020;
 
 @Component({
   selector: 'app-sidenav',
@@ -16,11 +16,13 @@ export class SidenavComponent implements OnInit {
   private mediaMatcher: MediaQueryList =
     matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
-  constructor(private zone: NgZone,
+  constructor(
+              private zone: NgZone,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private apiService : ApiService) {
-  }
+              private apiService : ApiService
+    ) { }
+    
   cameraData: CameraData[] = [];
 
   @ViewChild(MatSidenav, { static: true }) sidenav: MatSidenav;

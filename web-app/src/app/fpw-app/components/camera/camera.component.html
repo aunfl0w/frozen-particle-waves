@@ -1,4 +1,6 @@
 <mat-card class="camera-card">
   <mat-card-title>{{description}} <span fxFlex></span><ng-content></ng-content></mat-card-title>
-  <img mat-card-image [src]="imageUrl" [attr.loading]="getLazy()" class="camera-image">
+  <a (click)="imageClickEvent($event, clickData)">
+    <img mat-card-image [src]="imageUrl" [attr.loading]="getLazy()" class="camera-image"> 
+  </a>
 </mat-card>

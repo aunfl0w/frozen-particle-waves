@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CameraData } from 'src/app/models';
+
 
 @Component({
   selector: 'app-camera',
@@ -10,8 +11,10 @@ export class CameraComponent implements OnInit {
   @Input() cameraData: CameraData;
   @Input() update?: boolean = true;
   @Input() imageUrl?: string;
+  @Input() clickData?: string;
   @Input() description?: string;
   @Input() lazyLoad?: boolean = true;
+  @Output() clickImage: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
@@ -22,7 +25,11 @@ export class CameraComponent implements OnInit {
       });
     }
   }
-  getLazy():string{
+  getLazy(): string {
     return this.lazyLoad ? 'lazy' : null;
+  }
+
+  imageClickEvent(event: any, actionUrl: string) {
+    this.clickImage.emit(actionUrl);
   }
 }
