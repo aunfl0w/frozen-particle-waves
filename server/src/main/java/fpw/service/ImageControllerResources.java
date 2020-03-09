@@ -43,12 +43,6 @@ public class ImageControllerResources {
 	@Autowired
 	ImageRetrieverService imageRS;
 
-	@RequestMapping("/camera/status")
-	public String getStatus(Principal p) throws Exception {
-		LOGGER.info("Principal is " + p.getName());
-		return (new Date()).toString();
-	}
-
 	@RequestMapping("/camera/info")
 	public Collection<ImageRetriever> getInfo() throws IOException {
 		return imageRS.getImageRetrievers().values();

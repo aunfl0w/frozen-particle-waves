@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ApiService } from '../shared/api.service';
 import { LoginModel } from '../models/login.model';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginModel: LoginModel = new LoginModel();
   status = '';
 
@@ -28,5 +28,11 @@ export class LoginComponent {
         console.log('login is done');
       });
 
+  }
+
+  ngOnInit() {
+    this.apiService.status().subscribe((data) =>  { 
+      this.router.navigate(['fpw-app']);
+    });
   }
 }

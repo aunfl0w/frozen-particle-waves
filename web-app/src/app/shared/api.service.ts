@@ -21,6 +21,7 @@ export class ApiService {
   private cameraIdList = 'api/camera/{id}/idlist';
   private cameraImageIDUrl = 'api/camera/{id}/image/{stamp}';
   private webSocketURL = 'fpw2/api/socket';
+  private statusURL = 'api/status';
   private cameraInfo$ = new ReplaySubject<CameraData>();
 
   private httpOptions = {
@@ -36,6 +37,10 @@ export class ApiService {
 
   getCameraData(): Observable<CameraData> {
     return this.cameraInfo$.asObservable();
+  }
+
+  status(): Observable<any> {
+    return this.http.get(this.statusURL);
   }
 
   startCameraData() {
@@ -76,7 +81,6 @@ export class ApiService {
     const getURL = this.cameraIdList.replace('{id}', cameraData.getId());
     this.http.get(getURL, { observe: 'response', responseType: 'json' }).subscribe(
       (data: any) => {
-        console.log(data.body);
         for (const timestamp of data.body) {
           cameraData.addURLHistory(timestamp);
         }

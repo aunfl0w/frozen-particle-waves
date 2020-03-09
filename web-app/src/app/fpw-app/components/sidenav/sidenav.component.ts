@@ -33,8 +33,6 @@ export class SidenavComponent implements OnInit {
   async loadCameraData(){
     await this.apiService.getCameraData().subscribe(
       (data) => {
-        console.log(`adding data for sidenav`);
-        console.log(data);
         this.cameraData = this.cameraData.concat([data]);
       });
   }
