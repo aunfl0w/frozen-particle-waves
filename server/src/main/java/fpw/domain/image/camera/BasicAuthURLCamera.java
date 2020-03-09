@@ -25,9 +25,16 @@ public class BasicAuthURLCamera extends BasicURLCamera {
 	
 	@Override
 	InputStream getInputStream(URL u) throws IOException {
-		URLConnection urlConn = u.openConnection();
-		urlConn.setRequestProperty("Authorization", generateBAString());
-		return urlConn.getInputStream();
+		InputStream is;
+		URLConnection conn = u.openConnection();
+		conn.setConnectTimeout(30000);
+		conn.setReadTimeout(30000);
+		conn.setRequestProperty("Authorization", generateBAString());
+		conn.setRequestProperty("User-Agent",
+				String.format("Mozilla/5.0 (Java; %s; FPW 1.0.0)", System.getProperty("java.version")));
+		conn.connect();
+		is = conn.getInputStream();
+		return is;
 	}
 	
 	

@@ -39,7 +39,7 @@ public class QueueImageService implements Runnable {
 					image = ir.getImage();
 				} catch (Throwable t) {
 					log.error(ir.toString(), t);
-					log.error("Setting FailImage");
+					log.error("Setting FailImage for: " + ir.getID());
 					image = new FailImage(ir.getID());
 				}
 
