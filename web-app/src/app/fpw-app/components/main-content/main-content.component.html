@@ -1,4 +1,4 @@
-<mat-grid-list [cols]="columns" (window:resize)="onResize()" >
+<mat-grid-list rowHeight="100:90" [cols]="columns" (window:resize)="onResize()" >
     <mat-grid-tile *ngFor="let camera of cameraData">
         <app-camera 
             (clickImage)="imageClickEvent($event)"

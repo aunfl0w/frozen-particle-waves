@@ -6,8 +6,7 @@
     <mat-slide-toggle [checked]="autoUpdate" (change)="updateChanged($event)">Update</mat-slide-toggle>
   </div>
 </div>
-<p></p>
-<mat-grid-list [cols]="columns" (window:resize)="onResize()">
+<mat-grid-list rowHeight="100:90" [cols]="columns" (window:resize)="onResize()">
   <div *ngFor="let cameraURL of urls">
     <mat-grid-tile>
       <app-camera
