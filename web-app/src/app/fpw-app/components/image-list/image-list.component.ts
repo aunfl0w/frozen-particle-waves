@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/shared/api.service';
 import { CameraData } from 'src/app/models';
 import { filter } from 'rxjs/operators';
 import { MatSlideToggleChange } from '@angular/material';
+import { AppUtils } from 'src/app/shared/app.utils';
 
 const AUTOUPDATES: string = 'autoupdates';
 
@@ -52,9 +53,11 @@ export class ImageListComponent implements OnInit {
         console.log('complete');
       });
     });
+    window.scrollTo(0,0);
     this.onResize();
 
   }
+
   getDescription(url: string) {
     const start = url.lastIndexOf('/') + 1;
     const timestamp = url.substring(start, url.length);
@@ -71,6 +74,7 @@ export class ImageListComponent implements OnInit {
         return true;
       }
     });
+    AppUtils.scrollToTop(this.router);
   }
 
   setImageMode() {

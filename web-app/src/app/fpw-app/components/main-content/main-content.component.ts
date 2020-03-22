@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ApiService } from 'src/app/shared/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CameraData } from 'src/app/models';
+import { AppUtils } from 'src/app/shared/app.utils';
 
 
 
@@ -25,6 +26,7 @@ export class MainContentComponent implements OnInit {
       this.cameraData.push(data);
     });
     this.onResize();
+    AppUtils.scrollToTop(this.router);
   }
 
   onResize() {
