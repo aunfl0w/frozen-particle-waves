@@ -1,4 +1,4 @@
-FROM ubuntu:19.04
+FROM ubuntu:20.04
 
 RUN 	useradd -d /home/fpw -s /bin/bash -U fpw \
 	&& mkdir /home/fpw \
@@ -19,7 +19,7 @@ EXPOSE 8080
 ADD --chown=fpw:fpw target/frozen-particle-waves-0.0.1-SNAPSHOT.jar /home/fpw/bin/ 
 ADD --chown=fpw:fpw bin.docker/ /home/fpw/bin/
 
-ENTRYPOINT su -m fpw -c "/bin/bash -c ~fpw/bin/startfpw"
+ENTRYPOINT su --login fpw --whitelist-environment=DATA_PATH,STANDARD_PASS,MQTT_SERVER --command "/bin/bash -c ~fpw/bin/startfpw"
 
 	
 
