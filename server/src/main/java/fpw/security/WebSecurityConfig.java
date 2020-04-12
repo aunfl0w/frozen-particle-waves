@@ -69,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.failureHandler(authenticationFailureHandler)
 			.and()
 			.rememberMe()
-			.alwaysRemember(true)
+			.alwaysRemember(false)
 			.key(rememberMeKey);
 		
 	}
