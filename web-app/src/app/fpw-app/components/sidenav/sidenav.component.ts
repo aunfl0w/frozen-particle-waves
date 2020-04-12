@@ -42,6 +42,11 @@ export class SidenavComponent implements OnInit {
     this.closeIfSmallScreen();
   }
 
+  clickAllThings(): void {
+    this.router.navigate(['things'], { relativeTo: this.activatedRoute });
+    this.closeIfSmallScreen();
+  }
+
   clickCamera(camera: CameraData): void {
     console.log(`clickCamera(${camera.getId()})`);
     this.router.navigate(['image-list', camera.getId()], { relativeTo: this.activatedRoute });

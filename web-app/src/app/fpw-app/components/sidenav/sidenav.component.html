@@ -21,6 +21,14 @@
             </mat-list-item>
         </mat-nav-list>
 
+        <mat-nav-list>
+            <mat-list-item [routerLink]="['things']" routerLinkActive="active-menu" (click)="clickAllThings()">
+                <mat-icon matSuffix>settings_remote</mat-icon>
+                All Things
+            </mat-list-item>
+        </mat-nav-list>
+
+
     </mat-sidenav>
 
     <div class="app-sidenav-content">

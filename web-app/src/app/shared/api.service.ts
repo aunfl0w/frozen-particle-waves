@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpParams, HttpHeaders } from '@angular/common/http';
-
-
-
 import { Observable, Subscriber, ReplaySubject, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { WebSocketSubject } from 'rxjs/webSocket';
 
 import { LoginModel } from '../models/login.model';
 import { PictureUpdateMessage } from '../models/picture-update-messsage';
 import { CameraData, CameraInfo } from '../models';
+import { ThingsCommandModel } from '../models/things.command.model';
 
 
 @Injectable({
@@ -20,6 +17,7 @@ export class ApiService {
   private cameraInfoUrl = 'api/camera/info';
   private cameraIdList = 'api/camera/{id}/idlist';
   private cameraImageIDUrl = 'api/camera/{id}/image/{stamp}';
+  private thingsCommandURL = 'api/light/{id}/command';
   private webSocketURL = 'fpw2/api/socket';
   private statusURL = 'api/status';
   private cameraInfo$ = new ReplaySubject<CameraData>();
@@ -39,8 +37,13 @@ export class ApiService {
     return this.cameraInfo$.asObservable();
   }
 
+  thingsCommand(id: string, command: ThingsCommandModel): Observable<any> {
+    const commandURL = this.thingsCommandURL.replace("{id}", id);
+    return this.http.post(commandURL, command, { observe: 'response', responseType: 'json' });
+  }
+
   status(): Observable<any> {
-    return this.http.get(this.statusURL);
+    return this.http.get(this.statusURL, { withCredentials: true });
   }
 
   startCameraData() {
@@ -59,7 +62,7 @@ export class ApiService {
 
   registerSocket() {
     const loc = window.location;
-    let socketurl;
+    let socketurl: string;
     if (loc.protocol === 'https:') {
       socketurl = 'wss:';
     } else {

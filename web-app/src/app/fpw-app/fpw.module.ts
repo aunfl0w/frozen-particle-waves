@@ -12,6 +12,7 @@ import { MaterialModule } from '../shared/material.module';
 import { ImageListComponent } from './components/image-list/image-list.component';
 import { CameraComponent } from './components/camera/camera.component';
 import { VideoComponent } from './components/video/video.component';
+import { ThingsComponent } from './components/things/things.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,9 @@ const routes: Routes = [
       { path: '', redirectTo: 'all' },
       { path: 'all', component: MainContentComponent },
       { path: 'image-list/:id', component: ImageListComponent },
-      { path: 'video/:id', component: VideoComponent }
+      { path: 'video/:id', component: VideoComponent },
+      { path: 'things', component: ThingsComponent }
+
     ]
   }
 ];
@@ -33,7 +36,8 @@ const routes: Routes = [
     ImageListComponent,
     CameraComponent,
     VideoComponent,
-    FpwAppComponent
+    FpwAppComponent,
+    ThingsComponent
   ],
   imports: [
     CommonModule,
