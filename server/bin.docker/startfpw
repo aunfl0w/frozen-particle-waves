@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 cat <<EOM
-The following settings must be based in docker ENV
+The following settings must be passed in docker ENV
 or defaulted
 #Place to store images and logs
 DATA_PATH:/home/fpw/fpwdata
@@ -19,6 +19,9 @@ IMAGE_UPDATE_MS=25000
 #Example       /home/mylogin/Cameras.xml
 CAMERA_CONFIG=/home/fpw/Cameras.xml
 
+#mqtt server url tcp://192.168.1.238:1883
+MQTT_SERVER=$MQTT_SERVER
+
 EOM
 
 data_path=${DATA_PATH:=/home/fpw/fpwdata}
@@ -26,6 +29,7 @@ admin_pass=${ADMIN_PASS:="password$HOSTNAME$RANDOM"}
 standard_pass=${STANDARD_PASS:="password$HOSTNAME$RANDOM"}
 camera_config=${CAMERA_CONFIG:=/home/fpw/Cameras.xml}
 image_update_ms=${IMAGE_UPDATE_MS:=5000}
+mqtt_server=${MQTT_SERVER:="tcp://192.168.1.238:1883"}
 
 
 
@@ -47,6 +51,7 @@ echo Starting ......
 --camera.config.file=$camera_config \
 --camera.config.storage.file.path=$data_path \
 --camera.config.requestWait=$image_update_ms \
+--things.mqtt.server=$mqtt_server \
 -Djava.security.egd=file:/dev/./urandom \
 -server \
 -Xmx500m \

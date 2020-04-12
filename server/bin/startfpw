@@ -30,6 +30,7 @@ date > $DATA_PATH/logs/SystemOut$TIMESTAMP.log
 --camera.config.file=$CAMERA_CONFIG \
 --camera.config.storage.file.path=$DATA_PATH \
 --camera.config.requestWait=$IMAGE_UPDATE_MS \
+--things.mqtt.server=$MQTT_SERVER \
 -Djava.security.egd=file:/dev/./urandom \
 -server \
 -Xmx500m \

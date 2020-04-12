@@ -17,3 +17,6 @@ CAMERA_CONFIG=/home/dad/Cameras.xml
 
 #image update frequency in MS
 IMAGE_UPDATE_MS=25000
+
+#mqtt server
+MQTT_SERVER=tcp://192.168.1.238:1883

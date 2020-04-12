@@ -8,7 +8,7 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.springframework.ide.eclipse.boot.launch.BootMavenClassPathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="fpw.SpringBootApp"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--camera.config.file=${env_var:HOME}/Cameras.xml&#10;--camera.config.storage.file.path=/tmp/fpw"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--camera.config.file=${env_var:HOME}/Cameras.xml&#10;--camera.config.storage.file.path=/tmp/fpw&#10;--things.mqtt.server=tcp://192.168.1.238:1883"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="frozen-particle-waves"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.springframework.ide.eclipse.boot.launch.BootMavenSourcePathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.security.egd=file:/dev/./urandom"/>
