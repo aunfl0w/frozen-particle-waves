@@ -13,6 +13,8 @@ import { ImageListComponent } from './components/image-list/image-list.component
 import { CameraComponent } from './components/camera/camera.component';
 import { VideoComponent } from './components/video/video.component';
 import { ThingsComponent } from './components/things/things.component';
+import { LightDimmableComponent } from './components/light-dimmable/light-dimmable.component';
+import { LightColorComponent } from './components/light-color/light-color.component';
 
 const routes: Routes = [
   {
@@ -37,7 +39,9 @@ const routes: Routes = [
     CameraComponent,
     VideoComponent,
     FpwAppComponent,
-    ThingsComponent
+    ThingsComponent,
+    LightDimmableComponent,
+    LightColorComponent
   ],
   imports: [
     CommonModule,
