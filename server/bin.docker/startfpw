@@ -13,8 +13,7 @@ ADMIN_PASS=password$HOSTNAME$RANDOM
 STANDARD_PASS=password$HOSTNAME$RANDOM
 
 #image update frequency in MS
-IMAGE_UPDATE_MS=25000
-
+IMAGE_UPDATE_MS=25000 
 #Camera Config file path
 #Example       /home/mylogin/Cameras.xml
 CAMERA_CONFIG=/home/fpw/Cameras.xml
@@ -53,6 +52,10 @@ echo Starting ......
 --camera.config.requestWait=$image_update_ms \
 --things.mqtt.server=$mqtt_server \
 -Djava.security.egd=file:/dev/./urandom \
+-Djdk.tls.client.protocols="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
+-Djdk.tls.server.protocols="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
+-Dhttps.protocols="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
+-Dhttps.cipherSuites="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
 -server \
 -Xmx500m \
 -XX:+UseG1GC \
@@ -61,5 +64,5 @@ echo Starting ......
 -XX:ConcGCThreads=1 \
 -XX:InitiatingHeapOccupancyPercent=70 \
 -Dsun.net.client.defaultReadTimeout=60000 \
--d32 
+-d64
 
