@@ -6,7 +6,7 @@ RUN 	useradd -d /home/fpw -s /bin/bash -U fpw \
 	&& chown fpw:fpw /home/fpw \
 	&& chown fpw:fpw /home/fpw/bin \
 	&& apt update \
-	&& apt install -y --no-install-recommends openjdk-8-jre-headless curl \
+	&& apt install -y --no-install-recommends openjdk-14-jre-headless curl \
 	&& apt install -y mencoder \
 	&& apt clean 
 
