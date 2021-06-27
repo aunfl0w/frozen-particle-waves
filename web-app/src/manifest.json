@@ -1,0 +1,38 @@
+{
+    "name": "Frozen Particle Waves",
+    "short_name": "FPW",
+    "start_url": "/fpw2/",
+    "scope": "/fpw2/",
+    "display": "fullscreen",
+    "theme_color": "#000",
+    "background_color": "#000",
+    "description": "Control your IoT",
+    "orientation": "any",
+    "icons": [
+        {
+        "src": "assets/icon-16png",
+        "sizes": "16x16",
+        "type": "image/png"
+        },
+        {
+        "src": "assets/icon-32.png",
+        "sizes": "32x32",
+        "type": "image/png"
+        },
+        {
+        "src": "assets/icon-100.jpg",
+        "sizes": "100x100",
+        "type": "image/jpeg"
+        },
+        {
+        "src": "assets/icon-200.jpg",
+        "sizes": "200x200",
+        "type": "image/jpeg"
+        },
+        {
+        "src": "assets/icon-400.jpg",
+        "sizes": "400x400",
+        "type": "image/jpeg"
+        }
+        ]
+}

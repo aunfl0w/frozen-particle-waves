@@ -13,6 +13,26 @@ SIZE=180
 NAME=apple-touch-icon-$SIZE.png
 convert -resize x$SIZE largest.png $OUTDIR/$NAME
 
+SIZE=16
+NAME=icon-$SIZE.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+
+SIZE=32
+NAME=icon-$SIZE.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+
+SIZE=100
+NAME=icon-$SIZE.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+
+SIZE=200
+NAME=icon-$SIZE.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+
+SIZE=400
+NAME=icon-$SIZE.png
+convert -resize x$SIZE largest.png $OUTDIR/$NAME
+
 SIZE=128
 NAME=icon-normal.png
 convert -resize x$SIZE largest.png $OUTDIR/$NAME
