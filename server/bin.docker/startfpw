@@ -56,6 +56,7 @@ echo Starting ......
 -Djdk.tls.server.protocols="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
 -Dhttps.protocols="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
 -Dhttps.cipherSuites="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
+-Duser.timezone=$TZ \
 -server \
 -Xmx500m \
 -XX:+UseG1GC \
