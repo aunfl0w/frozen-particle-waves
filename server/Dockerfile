@@ -1,5 +1,5 @@
 FROM ubuntu:20.04
-RUN 	useradd -d /home/fpw -s /bin/bash -U fpw \
+RUN useradd -d /home/fpw -s /bin/bash -U fpw \
 	&& mkdir /home/fpw \
 	&& mkdir /home/fpw/bin \
 	&& chown fpw:fpw /home/fpw \
