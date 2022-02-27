@@ -1,6 +1,7 @@
-# WebApp
+# Frozen Particle Waves Web App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.0.
+This is the Frozen Particle Waves Angular web frontend.  If you are running the FPW SpringBoot application on the same host one port 8080, the default port for the app, the proxy.conf.json for webpack proxy is already configured to make use of that as your server.  You can use the Development server and other commands below in that case.  This application is designed to be packaged and served from the resources of the SpringBoot Web app that hosts the services that the Angular UI depends on.  To package and run that application see the scripts in the ../server directory.
+
 
 ## Development server
 
