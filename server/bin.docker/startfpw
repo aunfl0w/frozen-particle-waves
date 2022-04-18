@@ -27,7 +27,7 @@ data_path=${DATA_PATH:=/home/fpw/fpwdata}
 admin_pass=${ADMIN_PASS:="password$HOSTNAME$RANDOM"}
 standard_pass=${STANDARD_PASS:="password$HOSTNAME$RANDOM"}
 camera_config=${CAMERA_CONFIG:=/home/fpw/Cameras.xml}
-image_update_ms=${IMAGE_UPDATE_MS:=3500}
+image_update_ms=${IMAGE_UPDATE_MS:=3000}
 mqtt_server=${MQTT_SERVER:="tcp://192.168.1.238:1883"}
 
 
@@ -58,11 +58,11 @@ echo Starting ......
 -Dhttps.cipherSuites="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
 -Duser.timezone=$TZ \
 -server \
--Xmx500m \
--XX:+UseG1GC \
+-Xmx2g \
+-XX:+UseZGC \
 -XX:MaxGCPauseMillis=200 \
--XX:ParallelGCThreads=1 \
--XX:ConcGCThreads=1 \
+-XX:ParallelGCThreads=2 \
+-XX:ConcGCThreads=2 \
 -XX:InitiatingHeapOccupancyPercent=70 \
 -Dsun.net.client.defaultReadTimeout=60000 \
 -d64

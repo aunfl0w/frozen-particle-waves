@@ -38,13 +38,13 @@ date > $DATA_PATH/logs/SystemOut$TIMESTAMP.log
 -Dhttps.protocols="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
 -Dhttps.cipherSuites="TLSv1,TLSv1.1,TLSv1.2,TLSv1.3" \
 -server \
--Xmx500m \
--XX:+UseG1GC \
+-Xmx1g \
+-XX:+UseZGC \
 -XX:MaxGCPauseMillis=200 \
--XX:ParallelGCThreads=1 \
--XX:ConcGCThreads=1 \
+-XX:ParallelGCThreads=2 \
+-XX:ConcGCThreads=2 \
 -XX:InitiatingHeapOccupancyPercent=70 \
 -Dsun.net.client.defaultReadTimeout=60000 \
--d32 >> $DATA_PATH/logs/SystemOut$TIMESTAMP.log 2>&1 &
+-d64 >> $DATA_PATH/logs/SystemOut$TIMESTAMP.log 2>&1 &
 
 echo Starting ......
