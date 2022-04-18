@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/shared/api.service';
 import { CameraData } from 'src/app/models';
 import { filter } from 'rxjs/operators';
-import { MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { AppUtils } from 'src/app/shared/app.utils';
 
 const AUTOUPDATES: string = 'autoupdates';

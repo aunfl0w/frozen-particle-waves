@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 import { ApiService } from 'src/app/shared/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CameraData } from 'src/app/models';
