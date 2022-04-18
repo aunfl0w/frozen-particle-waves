@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -46,7 +45,6 @@ const routes: Routes = [
   imports: [
     CommonModule,
     MaterialModule,
-    FlexLayoutModule,
     FormsModule,
     RouterModule.forChild(routes)
   ],

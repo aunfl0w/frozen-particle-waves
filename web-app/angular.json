@@ -32,7 +32,6 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "es5BrowserSupport": true,
             "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,

@@ -12,4 +12,12 @@
 .mat-card-title {
     font-size: 20px;
     line-height: 36px;
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.center-flex {
+    flex: 1 1 0%;
+    box-sizing: border-box;
 }
