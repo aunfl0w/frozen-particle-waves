@@ -7,6 +7,7 @@ import { LoginModel } from '../models/login.model';
 import { PictureUpdateMessage } from '../models/picture-update-messsage';
 import { CameraData, CameraInfo } from '../models';
 import { ThingsCommandModel } from '../models/things.command.model';
+import { timeout } from 'rxjs/operators';
 
 
 @Injectable({
@@ -77,6 +78,9 @@ export class ApiService {
         this.cameraInfo$.subscribe(cameraInfo => {
           cameraInfo.tryUpdate(data);
         }).unsubscribe();
+      }, (error) => {
+        console.error(error);
+        setTimeout(window.location.reload, 1000 * 600 /* 10 minutes */);
       });
   }
 
