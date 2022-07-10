@@ -80,7 +80,10 @@ export class ApiService {
         }).unsubscribe();
       }, (error) => {
         console.error(error);
-        setTimeout(window.location.reload, 1000 * 600 /* 10 minutes */);
+        setTimeout(() => {window.location.reload()}, 1000 * 900 /* 15 minutes */);
+      }, () => {
+        console.error('complete');
+        setTimeout(() => {window.location.reload()}, 1000 * 900 /* 15 minutes */);
       });
   }
 
