@@ -20,23 +20,29 @@ public class BasicURLCamera implements ImageRetriever {
 
 	@Override
 	public Image getImage() throws IOException {
-		URL u = new URL(url);
-		Image image = new Image(id, contentType);
-		byte data[] = null;
+		InputStream is = null;
+		try {
+			URL u = new URL(url);
+			Image image = new Image(id, contentType);
+			byte data[] = null;
 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		InputStream is = getInputStream(u);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			is = getInputStream(u);
 
-		byte buff[] = new byte[1024];
-		int result = -1;
-		do {
-			result = is.read(buff); // need timeout
-			bos.write(buff, 0, result > 0 ? result : 0);
-		} while (result > 0);
-		data = bos.toByteArray();
+			byte buff[] = new byte[1024];
+			int result = -1;
+			do {
+				result = is.read(buff); // need timeout
+				bos.write(buff, 0, result > 0 ? result : 0);
+			} while (result > 0);
+			data = bos.toByteArray();
 
-		image.setData(data);
-		return image;
+			image.setData(data);
+			return image;
+		} finally {
+			if(is != null) 
+				is.close();
+		}
 	}
 
 	@JsonIgnore
