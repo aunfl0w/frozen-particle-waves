@@ -15,6 +15,6 @@ rm server/src/main/resources/resources/*.js
 
 cd web-app
 npm install
-ng build --prod --build-optimizer
+ng build --configuration production --build-optimizer
 cp -r dist/web-app/* ../server/src/main/resources/resources/
 echo COMPLETED ANGULAR UI WEB APP BUILD AND INSTALL

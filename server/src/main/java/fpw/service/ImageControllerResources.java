@@ -13,19 +13,19 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpw.domain.image.ImageRetriever;
 import fpw.service.storage.ImageStorage;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("api/")
@@ -41,24 +41,24 @@ public class ImageControllerResources {
 	@Autowired
 	ImageRetrieverService imageRS;
 
-	@RequestMapping("/camera/info")
+	@GetMapping("/camera/info")
 	public Collection<ImageRetriever> getInfo() throws IOException {
 		return imageRS.getImageRetrievers().values();
 	}
 
-	@RequestMapping("/camera/{cameraID}/idlist")
+	@GetMapping("/camera/{cameraID}/idlist")
 	public Collection<Long> getidList(@PathVariable String cameraID) throws IOException {
 		return iss.getImageIdList(cameraID, 40);
 	}
 
-	@RequestMapping(path = "/camera/{cameraID}/image", method = RequestMethod.GET)
+	@GetMapping("/camera/{cameraID}/image")
 	@ResponseBody
 	public void getImage(@PathVariable String cameraID, HttpServletResponse response) throws Throwable {
 		ImageStorage img = iss.getLatestImage(cameraID);
 		writeImage(response, img);
 	}
 
-	@RequestMapping(path = "/camera/{cameraID}/image/{imageID}", method = RequestMethod.GET)
+	@GetMapping("/camera/{cameraID}/image/{imageID}")
 	@ResponseBody
 	public void getImage(@PathVariable String cameraID, @PathVariable Long imageID, HttpServletResponse response)
 			throws Throwable {
@@ -67,7 +67,7 @@ public class ImageControllerResources {
 		writeImage(response, img);
 	}
 
-	@RequestMapping("/camera/{cameraID}/video")
+	@GetMapping("/camera/{cameraID}/video")
 	@ResponseBody
 	public void getidVideo(@PathVariable String cameraID, HttpServletResponse response)
 			throws IOException, InterruptedException {
@@ -128,6 +128,7 @@ public class ImageControllerResources {
 
 		response.flushBuffer();
 		imageWriter.dispose();
+		img.getInputStream().close();
 		os.close();
 	}
 }

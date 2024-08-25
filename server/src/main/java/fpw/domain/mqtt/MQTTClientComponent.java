@@ -2,8 +2,6 @@ package fpw.domain.mqtt;
 
 import java.util.UUID;
 
-import javax.annotation.PreDestroy;
-
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -48,7 +46,7 @@ public class MQTTClientComponent {
 				new MqttMessage(command.getCommandValue().getBytes()));
 	}
 
-	@PreDestroy()
+	@jakarta.annotation.PreDestroy()
 	public void preDestroy() {
 		try {
 			client.disconnect();

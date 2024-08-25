@@ -9,22 +9,24 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.stereotype.Component;
 
+@Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class FPWWebSecurityConfig {
 	
 	@Autowired
 	private RESTAuthenticationEntryPoint authenticationEntryPoint;
@@ -32,17 +34,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private RESTAuthenticationFailureHandler authenticationFailureHandler;
 	@Autowired
 	private RESTAuthenticationSuccessHandler authenticationSuccessHandler;
-	UserDetailsManager MANAGER = null;
 
-	@Value("${authn.password.admin:password}") 
-	String adminPassword; 
-	
-	@Value("${authn.password.user:password}") 
-	String userPassword; 
+	InMemoryUserDetailsManager MANAGER = null;
+
+
 	
 	@Value("${authn.password.remembermekey:fpw}")
 	String rememberMeKey;
 	
+	@Component
 	class FPWAuthenticationProvider implements AuthenticationProvider {
 
 		@Override
@@ -82,10 +82,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return result;
 		 
 	};
-	
-	@Override
-	@Bean
-	protected UserDetailsService userDetailsService() {
+
+    @Bean
+    InMemoryUserDetailsManager userDetailsService(
+            @Value("${authn.password.admin:password}") String adminPassword,
+            @Value("${authn.password.user:password}") String userPassword) {
 		UserDetails user = User.builder().passwordEncoder(ENCODER)
 				.username("User")
 				.password(userPassword)
@@ -103,11 +104,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return MANAGER;
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/api/log**").permitAll()
-			.antMatchers("/api/**").authenticated()
+			.requestMatchers("/api/log**").permitAll()
+			.requestMatchers("/api/**").authenticated()
 		.and()
 			.authenticationProvider(new FPWAuthenticationProvider())
 			.headers()
@@ -123,16 +124,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.rememberMe()
 			.alwaysRemember(false)
 			.key(rememberMeKey);
-		
+		return http.build();
 	}
 	
-
-	
-	@Bean("authenticationManager")
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		
-		return super.authenticationManagerBean();
-	}
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+            throws Exception {
+        return config.getAuthenticationManager();
+    }
 	
 }

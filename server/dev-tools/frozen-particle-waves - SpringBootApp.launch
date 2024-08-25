@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.springframework.ide.eclipse.boot.launch">
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
         <listEntry value="/frozen-particle-waves/src/main/java/fpw/SpringBootApp.java"/>
     </listAttribute>
@@ -12,15 +13,16 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.springframework.ide.eclipse.boot.launch.BootMavenClassPathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="fpw.SpringBootApp"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--camera.config.file=/home/aun/Cameras.xml&#10;--camera.config.storage.file.path=/tmp/fpw&#10;--things.mqtt.server=tcp://192.168.1.238:1883"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--camera.config.file=/home/aun/src/Cameras.xml&#10;--camera.config.storage.file.path=/tmp/fpw&#10;--things.mqtt.server=tcp://192.168.1.203:1883&#10;--authn.password.admin=password&#10;--authn.password.user=password&#10;--endpoints.shutdown.sensitive=false &#10;--endpoints.shutdown.enabled=true &#10;-Djava.security.egd=file:/dev/./urandom &#10;-Dcom.sun.jndi.ldap.object.disableEndpointIdentification=true &#10;-Djdk.tls.client.protocols=&quot;TLSv1,TLSv1.1,TLSv1.2,TLSv1.3&quot; &#10;-Djdk.tls.server.protocols=&quot;TLSv1,TLSv1.1,TLSv1.2,TLSv1.3&quot; &#10;-Dhttps.protocols=&quot;TLSv1,TLSv1.1,TLSv1.2,TLSv1.3&quot; &#10;-Dhttps.cipherSuites=&quot;TLSv1,TLSv1.1,TLSv1.2,TLSv1.3&quot; &#10;-server &#10;-Xmx1g &#10;-XX:+UseZGC &#10;-XX:MaxGCPauseMillis=200 &#10;-XX:ParallelGCThreads=2 &#10;-XX:ConcGCThreads=2 &#10;-XX:InitiatingHeapOccupancyPercent=70 &#10;-Dsun.net.client.defaultReadTimeout=60000 &#10;-d64"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="frozen-particle-waves"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.springframework.ide.eclipse.boot.launch.BootMavenSourcePathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.security.egd=file:/dev/./urandom"/>
     <stringAttribute key="process_factory_id" value="org.springframework.ide.eclipse.boot.launch.process.BootProcessFactory"/>
     <booleanAttribute key="spring.boot.ansi.console" value="true"/>
     <stringAttribute key="spring.boot.app.properties" value=""/>
+    <booleanAttribute key="spring.boot.auto-connect" value="true"/>
     <booleanAttribute key="spring.boot.dash.hidden" value="false"/>
-    <booleanAttribute key="spring.boot.debug.enable" value="false"/>
+    <booleanAttribute key="spring.boot.debug.enable" value="true"/>
     <booleanAttribute key="spring.boot.fast.startup" value="true"/>
     <booleanAttribute key="spring.boot.jmx.enable" value="true"/>
     <booleanAttribute key="spring.boot.lifecycle.enable" value="true"/>

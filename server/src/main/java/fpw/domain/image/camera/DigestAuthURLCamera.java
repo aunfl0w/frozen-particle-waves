@@ -38,6 +38,7 @@ public class DigestAuthURLCamera extends BasicAuthURLCamera {
 			CloseableHttpResponse res = httpclient.execute(httpget, localContext);
 			log.info(res.toString());
 			return res.getEntity().getContent();
+			
 		
 	}
 

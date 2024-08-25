@@ -2,10 +2,6 @@ package fpw.security;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,10 +13,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * login and logout with json requests post in json body to login.json {
@@ -42,8 +44,9 @@ public class JsonLoginResource {
 	@Value("${authn.password.remembermekey:fpw}")
 	String rememberMeKey;
 
-	@RequestMapping(value = "/login.json", method = RequestMethod.POST)
-	public void jsonLoginAttempt(@RequestBody LoginRequest loginRequest, HttpServletRequest request,
+	//@RequestMapping(value = "/login.json", method = RequestMethod.POST)
+	@PostMapping(path = "/login.json")
+	public void jsonLoginAttempt(@RequestBody LoginRequest loginRequest, jakarta.servlet.http.HttpServletRequest request,
 			HttpServletResponse response) {
 
 		try {
@@ -80,7 +83,8 @@ public class JsonLoginResource {
 
 	}
 
-	@RequestMapping(value = "/logout.json", method = RequestMethod.GET)
+	//@RequestMapping(value = "/logout.json", method = RequestMethod.GET)
+	@GetMapping(path = "/logout.json")
 	public void jsonLogoutAttempt(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
